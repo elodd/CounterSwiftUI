@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct CounterSwiftUIApp: App {
+    @State private var viewModel: CounterViewModel = .init()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CounterView(viewModel: viewModel)
         }
     }
 }
