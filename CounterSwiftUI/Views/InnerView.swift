@@ -13,6 +13,8 @@ struct InnerView: View {
     
     var body: some View {
         VStack {
+            TextField("Name:", text: $viewModel.counter.name)
+                .border(Color.black)
             HStack {
                 Button("Add") {
                     self.viewModel.increment()
@@ -27,6 +29,9 @@ struct InnerView: View {
         }
         .frame(width: 200, height: 100)
         .background(Color.init(red: 0.0, green: 0.0, blue: 1.0).opacity(0.2))
+        .onDisappear() {
+            self.updateCounter()
+        }
     }
     
     func updateCounter() {
