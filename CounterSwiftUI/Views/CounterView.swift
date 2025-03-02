@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CounterView: View {
     @Bindable var viewModel: CounterViewModel
@@ -31,7 +32,6 @@ struct CounterView: View {
             print("Error saving counter: \(error)")
         }
     }
-
 }
 
 #Preview {

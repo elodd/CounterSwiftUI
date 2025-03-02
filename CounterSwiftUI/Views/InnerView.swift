@@ -9,21 +9,32 @@ import SwiftUI
 
 struct InnerView: View {
     @Bindable var viewModel: CounterViewModel
-    // TODO: add database-update closure
-
+    @Environment(\.modelContext) var modelContext
+    
     var body: some View {
         VStack {
             HStack {
                 Button("Add") {
                     self.viewModel.increment()
+                    self.updateCounter()
                 }
                 Text("\(self.viewModel.counter.count)")
                 Button("Delete") {
                     self.viewModel.decrement()
+                    self.updateCounter()
                 }
             }
         }
         .frame(width: 200, height: 100)
         .background(Color.init(red: 0.0, green: 0.0, blue: 1.0).opacity(0.2))
+    }
+    
+    func updateCounter() {
+        do {
+            self.modelContext.insert(self.viewModel.counter)
+            try self.modelContext.save()
+        } catch {
+            print("Error saving counter: \(error)")
+        }
     }
 }
