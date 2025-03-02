@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct InnerView: View {
-    @Bindable var vm: CounterViewModel
+    @Bindable var viewModel: CounterViewModel
+    // TODO: add database-update closure
 
     var body: some View {
         VStack {
             HStack {
                 Button("Add") {
-                    self.vm.increment()
+                    self.viewModel.increment()
                 }
-                Text("\(self.vm.count)")
+                Text("\(self.viewModel.counter.count)")
                 Button("Delete") {
-                    self.vm.decrement()
+                    self.viewModel.decrement()
                 }
-
             }
         }
         .frame(width: 200, height: 100)

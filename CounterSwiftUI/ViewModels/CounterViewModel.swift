@@ -6,16 +6,21 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @Observable
 class CounterViewModel {
-    var count: Int = 0
-    
+    var counter: Counter
+
+    init(counter: Counter) {
+        self.counter = counter
+    }
+
     func increment() {
-        count += 1
+        self.counter.count += 1
     }
     
     func decrement() {
-        count -= 1
+        self.counter.count -= 1
     }
 }
