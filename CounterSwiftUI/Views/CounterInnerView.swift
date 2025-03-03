@@ -13,6 +13,9 @@ struct CounterInnerView: View {
     
     var body: some View {
         VStack {
+            Label("Date:\(self.viewModel.counterModel.date.formatted(date: .abbreviated, time: .shortened))", systemImage: "calendar")
+                .dynamicTypeSize(.small)
+                .padding()
             TextField("Name:", text: $viewModel.counterModel.name)
                 .border(Color.black)
                 .padding()
@@ -29,7 +32,7 @@ struct CounterInnerView: View {
                 .padding()
             }
         }
-        .frame(width: 250, height: 100)
+        .frame(width: 250, height: 200)
         .background(Color.init(red: 0.0, green: 0.0, blue: 1.0).opacity(0.2))
         .onDisappear() {
             self.saveState()
