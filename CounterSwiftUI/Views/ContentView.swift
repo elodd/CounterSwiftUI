@@ -5,13 +5,6 @@
 //  Created by eloddobos on 2025-03-02.
 //
 
-//
-//  VoiceListView.swift
-//  MindfulVoice
-//
-//  Created by eloddobos on 2024-11-14.
-//
-
 import Foundation
 import SwiftUI
 import SwiftData
