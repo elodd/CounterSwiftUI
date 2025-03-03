@@ -53,7 +53,13 @@ public struct ContentView: View {
             }
             .navigationTitle("Counters")
             .navigationDestination(isPresented: self.$showCounter) {
-                CounterView(viewModel: CounterViewModel(counter: CounterModel(name: "Counter\(self.counterModels.count + 1)")))
+                CounterView(
+                    viewModel: CounterViewModel(
+                        counterModel: CounterModel(
+                            name: "Counter\(self.counterModels.count + 1)"
+                        )
+                    )
+                )
             }
         }
     }

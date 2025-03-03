@@ -11,7 +11,12 @@ struct CounterRow: View {
     @Bindable var counterModel: CounterModel
 
     var body: some View {
-        NavigationLink("Name:\(counterModel.name)\n Count:\(counterModel.countString())\n Date:\(counterModel.date.formatted(date: .abbreviated, time: .shortened))", destination: CounterInnerView(viewModel: CounterViewModel(counter: self.counterModel)))
+        NavigationLink(
+            "Name:\(counterModel.name)\n Count:\(counterModel.countString())\n Date:\(counterModel.date.formatted(date: .abbreviated, time: .shortened))",
+            destination: CounterInnerView(
+                viewModel: CounterViewModel(counterModel: self.counterModel)
+            )
+        )
     }
 }
 

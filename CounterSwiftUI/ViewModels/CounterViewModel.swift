@@ -12,8 +12,8 @@ import SwiftData
 class CounterViewModel {
     var counterModel: CounterModel
 
-    init(counter: CounterModel) {
-        self.counterModel = counter
+    init(counterModel: CounterModel) {
+        self.counterModel = counterModel
     }
 
     func increment() {
