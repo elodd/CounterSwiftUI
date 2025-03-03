@@ -10,9 +10,9 @@ import SwiftData
 
 @Observable
 class CounterViewModel {
-    var counter: Counter
+    var counter: CounterModel
 
-    init(counter: Counter) {
+    init(counter: CounterModel) {
         self.counter = counter
     }
 

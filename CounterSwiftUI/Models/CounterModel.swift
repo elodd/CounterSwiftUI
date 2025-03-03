@@ -9,12 +9,15 @@ import Foundation
 import SwiftData
 
 @Model
-class Counter: Identifiable {
+class CounterModel: Identifiable {
+
+    var id: String
     var date: Date
     var name: String
     var count: Int
     
     init(name: String, count: Int = 0, date: Date = Date()) {
+        self.id = UUID().uuidString
         self.name = name
         self.count = count
         self.date = date

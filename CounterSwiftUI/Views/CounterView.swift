@@ -18,7 +18,7 @@ struct CounterView: View {
 
     var body: some View {
         VStack {
-            InnerView(viewModel: viewModel)
+            CounterInnerView(viewModel: viewModel)
         }.onAppear() {
             self.addCounter()
         }
@@ -36,6 +36,6 @@ struct CounterView: View {
 
 #Preview {
     @Previewable
-    @State var viewModel: CounterViewModel = .init(counter: Counter(name: "Counter1"))
+    @State var viewModel: CounterViewModel = .init(counter: CounterModel(name: "Counter1"))
     CounterView(viewModel: viewModel)
 }

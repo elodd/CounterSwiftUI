@@ -19,7 +19,7 @@ import SwiftData
 public struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.presentationMode) var presentationMode
-    @Query(sort: \Counter.date) var counters: [Counter]
+    @Query(sort: \CounterModel.date) var counters: [CounterModel]
     @State var showCounter = false
 
     public var body: some View {
@@ -52,7 +52,7 @@ public struct ContentView: View {
             }
             .navigationTitle("Counters")
             .navigationDestination(isPresented: self.$showCounter) {
-                CounterView(viewModel: CounterViewModel(counter: Counter(name: "Counter\(self.counters.count + 1)")))
+                CounterView(viewModel: CounterViewModel(counter: CounterModel(name: "Counter\(self.counters.count + 1)")))
             }
         }
     }

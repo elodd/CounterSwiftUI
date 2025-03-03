@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InnerView: View {
+struct CounterInnerView: View {
     @Bindable var viewModel: CounterViewModel
     @Environment(\.modelContext) var modelContext
     
