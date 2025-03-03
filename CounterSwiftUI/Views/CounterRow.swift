@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct CounterRow: View {
-    @Bindable var counter: CounterModel
+    @Bindable var counterModel: CounterModel
 
     var body: some View {
-        NavigationLink("Name:\(counter.name)\n Count:\(counter.countString())\n Date:\(counter.date.formatted(date: .abbreviated, time: .shortened))", destination: CounterInnerView(viewModel: CounterViewModel(counter: self.counter)))
+        NavigationLink("Name:\(counterModel.name)\n Count:\(counterModel.countString())\n Date:\(counterModel.date.formatted(date: .abbreviated, time: .shortened))", destination: CounterInnerView(viewModel: CounterViewModel(counter: self.counterModel)))
     }
 }
 
 #Preview {
-    CounterRow(counter: CounterModel(name: "Counter1", count: 0, date: Date()))
+    CounterRow(counterModel: CounterModel(name: "Counter1", count: 0, date: Date()))
 }

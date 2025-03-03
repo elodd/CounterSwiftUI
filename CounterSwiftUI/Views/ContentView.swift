@@ -19,22 +19,23 @@ import SwiftData
 public struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.presentationMode) var presentationMode
-    @Query(sort: \CounterModel.date) var counters: [CounterModel]
+    @Query(sort: \CounterModel.date) var counterModels: [CounterModel]
     @State var showCounter = false
 
     public var body: some View {
         NavigationStack {
             VStack {
-                if self.counters.isEmpty {
+                if self.counterModels.isEmpty {
                     Spacer()
-                    Text("No counters yet.")
+                    Text("Add a new counter by tapping the plus (+) button.")
                         .font(.headline)
+                        .padding()
                     Spacer()
                 } else {
                     List {
-                        ForEach(counters, id: \.self) { counter in
+                        ForEach(counterModels, id: \.self) { counterModel in
                             VStack {
-                                CounterRow(counter: counter)
+                                CounterRow(counterModel: counterModel)
                             }
                         }
                         .onDelete(perform: self.deleteCounter)
@@ -52,14 +53,14 @@ public struct ContentView: View {
             }
             .navigationTitle("Counters")
             .navigationDestination(isPresented: self.$showCounter) {
-                CounterView(viewModel: CounterViewModel(counter: CounterModel(name: "Counter\(self.counters.count + 1)")))
+                CounterView(viewModel: CounterViewModel(counter: CounterModel(name: "Counter\(self.counterModels.count + 1)")))
             }
         }
     }
 
     func deleteCounter(_ indexSet: IndexSet) {
         for index in indexSet {
-            let counter = self.counters[index]
+            let counter = self.counterModels[index]
             self.modelContext.delete(counter)
         }
     }

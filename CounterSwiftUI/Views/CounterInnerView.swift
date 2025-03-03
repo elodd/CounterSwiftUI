@@ -13,7 +13,7 @@ struct CounterInnerView: View {
     
     var body: some View {
         VStack {
-            TextField("Name:", text: $viewModel.counter.name)
+            TextField("Name:", text: $viewModel.counterModel.name)
                 .border(Color.black)
                 .padding()
             HStack {
@@ -21,7 +21,7 @@ struct CounterInnerView: View {
                     self.viewModel.increment()
                 }
                 .padding()
-                Text("\(self.viewModel.counter.count)")
+                Text("\(self.viewModel.counterModel.count)")
                 .padding()
                 Button("Delete") {
                     self.viewModel.decrement()
@@ -38,7 +38,7 @@ struct CounterInnerView: View {
     
     func saveState() {
         do {
-            self.modelContext.insert(self.viewModel.counter)
+            self.modelContext.insert(self.viewModel.counterModel)
             try self.modelContext.save()
         } catch {
             print("Error saving counter: \(error)")

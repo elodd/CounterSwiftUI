@@ -10,17 +10,17 @@ import SwiftData
 
 @Observable
 class CounterViewModel {
-    var counter: CounterModel
+    var counterModel: CounterModel
 
     init(counter: CounterModel) {
-        self.counter = counter
+        self.counterModel = counter
     }
 
     func increment() {
-        self.counter.count += 1
+        self.counterModel.count += 1
     }
     
     func decrement() {
-        self.counter.count -= 1
+        self.counterModel.count -= 1
     }
 }
