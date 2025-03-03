@@ -19,17 +19,6 @@ struct CounterView: View {
     var body: some View {
         VStack {
             CounterInnerView(viewModel: viewModel)
-        }.onAppear() {
-            self.addCounter()
-        }
-    }
-
-    func addCounter() {
-        do {
-            self.modelContext.insert(self.viewModel.counter)
-            try self.modelContext.save()
-        } catch {
-            print("Error saving counter: \(error)")
         }
     }
 }

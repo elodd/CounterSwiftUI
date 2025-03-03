@@ -18,12 +18,10 @@ struct CounterInnerView: View {
             HStack {
                 Button("Add") {
                     self.viewModel.increment()
-                    self.updateCounter()
                 }
                 Text("\(self.viewModel.counter.count)")
                 Button("Delete") {
                     self.viewModel.decrement()
-                    self.updateCounter()
                 }
             }
         }
