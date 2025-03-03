@@ -12,7 +12,7 @@ struct CounterInnerView: View {
     @Environment(\.modelContext) var modelContext
     
     var body: some View {
-        VStack {
+        VStack(alignment: .center) {
             Label("Date:\(self.viewModel.counterModel.date.formatted(date: .abbreviated, time: .shortened))", systemImage: "calendar")
                 .dynamicTypeSize(.small)
                 .padding()
