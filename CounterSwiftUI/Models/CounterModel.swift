@@ -10,7 +10,6 @@ import SwiftData
 
 @Model
 class CounterModel: Identifiable {
-
     var id: String
     var date: Date
     var name: String
