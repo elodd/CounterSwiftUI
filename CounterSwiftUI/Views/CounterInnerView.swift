@@ -15,17 +15,21 @@ struct CounterInnerView: View {
         VStack {
             TextField("Name:", text: $viewModel.counter.name)
                 .border(Color.black)
+                .padding()
             HStack {
                 Button("Add") {
                     self.viewModel.increment()
                 }
+                .padding()
                 Text("\(self.viewModel.counter.count)")
+                .padding()
                 Button("Delete") {
                     self.viewModel.decrement()
                 }
+                .padding()
             }
         }
-        .frame(width: 200, height: 100)
+        .frame(width: 250, height: 100)
         .background(Color.init(red: 0.0, green: 0.0, blue: 1.0).opacity(0.2))
         .onDisappear() {
             self.saveState()
