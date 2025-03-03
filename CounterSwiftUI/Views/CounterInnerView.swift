@@ -28,11 +28,11 @@ struct CounterInnerView: View {
         .frame(width: 200, height: 100)
         .background(Color.init(red: 0.0, green: 0.0, blue: 1.0).opacity(0.2))
         .onDisappear() {
-            self.updateCounter()
+            self.saveState()
         }
     }
     
-    func updateCounter() {
+    func saveState() {
         do {
             self.modelContext.insert(self.viewModel.counter)
             try self.modelContext.save()
