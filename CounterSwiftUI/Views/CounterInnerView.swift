@@ -1,5 +1,5 @@
 //
-//  InnerView.swift
+//  CounterInnerView.swift
 //  CounterSwiftUI
 //
 //  Created by eloddobos on 2025-02-08.
