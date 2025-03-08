@@ -24,7 +24,7 @@ public struct ContentView: View {
                     Spacer()
                 } else {
                     List {
-                        ForEach(counterModels, id: \.self) { counterModel in
+                        ForEach(counterModels, id: \.id) { counterModel in
                             VStack {
                                 CounterRow(counterModel: counterModel)
                             }
