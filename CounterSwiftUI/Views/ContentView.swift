@@ -10,7 +10,6 @@ import SwiftData
 
 public struct ContentView: View {
     @Environment(\.modelContext) var modelContext
-    @Environment(\.presentationMode) var presentationMode
     @Query(sort: \CounterModel.date) var counterModels: [CounterModel]
     @State var showCounter = false
 
