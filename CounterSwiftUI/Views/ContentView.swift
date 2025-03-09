@@ -64,5 +64,6 @@ public struct ContentView: View {
 }
 
 #Preview {
+    // TODO: Prefil SwiftData with data
     ContentView()
 }
