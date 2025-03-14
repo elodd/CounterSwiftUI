@@ -18,6 +18,10 @@ public struct ContentView: View {
             VStack {
                 if self.counterModels.isEmpty {
                     Spacer()
+                    Image(systemName: "plus.circle")
+                        .font(.system(size: 100))
+                        .foregroundColor(.gray)
+                        .padding()
                     Text("Add a new counter by tapping the plus (+) button.")
                         .font(.headline)
                         .padding()
@@ -64,6 +68,6 @@ public struct ContentView: View {
 }
 
 #Preview {
-    // TODO: Prefil SwiftData with data
+    // TODO: Prefil SwiftData modelContainer with data
     ContentView()
 }
