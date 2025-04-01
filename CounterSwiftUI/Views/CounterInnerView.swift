@@ -19,20 +19,28 @@ struct CounterInnerView: View {
             TextField("Name:", text: $viewModel.counterModel.name)
                 .border(Color.black)
                 .padding()
-            HStack {
-                Button("Add") {
-                    self.viewModel.increment()
+            Text("\(self.viewModel.counterModel.count)")
+                .onChange(of: self.viewModel.counterModel.count) { oldValue, newValue in
+                    print("Count changed from \(oldValue) to \(newValue)")
                 }
-                .padding()
-                Text("\(self.viewModel.counterModel.count)")
-                .padding()
-                Button("Delete") {
+            HStack {
+                Button("Decrement") {
                     self.viewModel.decrement()
                 }
+                .font(.custom("Courier New", size: 14))
+                .bold()
+                .fixedSize(horizontal: true, vertical: false)
+                .padding()
+                Button("Increment") {
+                    self.viewModel.increment()
+                }
+                .font(.custom("Courier New", size: 14))
+                .bold()
+                .fixedSize(horizontal: true, vertical: false)
                 .padding()
             }
         }
-        .frame(width: 250, height: 200)
+        .frame(width: 280, height: 250)
         .background(Color.init(red: 0.0, green: 0.0, blue: 1.0).opacity(0.2))
         .onDisappear() {
             self.saveState()
