@@ -16,8 +16,7 @@ struct CounterInnerView: View {
             Label("Date:\(self.viewModel.counterModel.date.formatted(date: .abbreviated, time: .shortened))", systemImage: "calendar")
                 .dynamicTypeSize(.small)
                 .padding()
-            TextField("Name:", text: $viewModel.counterModel.name)
-                .border(Color.black)
+            Label(viewModel.counterModel.name, systemImage: "person")
                 .padding()
             Text("\(self.viewModel.counterModel.count)")
                 .onChange(of: self.viewModel.counterModel.count) { oldValue, newValue in
@@ -27,20 +26,20 @@ struct CounterInnerView: View {
                 Button("Decrement") {
                     self.viewModel.decrement()
                 }
-                .font(.custom("Courier New", size: 14))
+                .font(.custom("Courier New", size: 12))
                 .bold()
                 .fixedSize(horizontal: true, vertical: false)
                 .padding()
                 Button("Increment") {
                     self.viewModel.increment()
                 }
-                .font(.custom("Courier New", size: 14))
+                .font(.custom("Courier New", size: 12))
                 .bold()
                 .fixedSize(horizontal: true, vertical: false)
                 .padding()
             }
         }
-        .frame(width: 280, height: 250)
+        .frame(width: 300, height: 250)
         .background(Color.init(red: 0.0, green: 0.0, blue: 1.0).opacity(0.2))
         .onDisappear() {
             self.saveState()
