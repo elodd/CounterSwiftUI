@@ -23,7 +23,11 @@ class CounterModel: Identifiable {
     }
     
     func countString() -> String {
-        "\(self.count)"
+        "Count:\(self.count)"
+    }
+
+    func nameString() -> String {
+        "Name:\(self.name)"
     }
 
     func dateString() -> String {

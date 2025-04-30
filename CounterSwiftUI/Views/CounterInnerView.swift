@@ -19,7 +19,7 @@ struct CounterInnerView: View {
             )
                 .dynamicTypeSize(.small)
                 .padding()
-            Label(self.viewModel.counterModel.name, systemImage: "person")
+            Label(self.viewModel.counterModel.nameString(), systemImage: "person")
                 .padding()
             Label(self.viewModel.counterModel.countString(),
                 systemImage: "digitalcrown.arrow.counterclockwise"
@@ -32,14 +32,12 @@ struct CounterInnerView: View {
                 Button("Decrement") {
                     self.viewModel.decrement()
                 }
-                .font(.custom("Courier New", size: 14))
                 .bold()
                 .fixedSize(horizontal: true, vertical: false)
                 .padding()
                 Button("Increment") {
                     self.viewModel.increment()
                 }
-                .font(.custom("Courier New", size: 14))
                 .bold()
                 .fixedSize(horizontal: true, vertical: false)
                 .padding()
