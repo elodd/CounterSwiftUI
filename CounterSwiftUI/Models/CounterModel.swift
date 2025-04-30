@@ -23,6 +23,10 @@ class CounterModel: Identifiable {
     }
     
     func countString() -> String {
-        return "\(count)"
+        "\(self.count)"
+    }
+
+    func dateString() -> String {
+        "Date:\(self.date.formatted(date: .numeric, time: .shortened))"
     }
 }

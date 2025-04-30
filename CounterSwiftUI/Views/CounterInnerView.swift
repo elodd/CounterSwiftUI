@@ -13,12 +13,17 @@ struct CounterInnerView: View {
     
     var body: some View {
         VStack(alignment: .center) {
-            Label("Date:\(self.viewModel.counterModel.date.formatted(date: .abbreviated, time: .shortened))", systemImage: "calendar")
+            Label(
+                self.viewModel.counterModel.dateString(),
+                systemImage: "calendar"
+            )
                 .dynamicTypeSize(.small)
                 .padding()
-            Label(viewModel.counterModel.name, systemImage: "person")
+            Label(self.viewModel.counterModel.name, systemImage: "person")
                 .padding()
-            Text("\(self.viewModel.counterModel.count)")
+            Label(self.viewModel.counterModel.countString(),
+                systemImage: "digitalcrown.arrow.counterclockwise"
+            )
                 .onChange(of: self.viewModel.counterModel.count) { oldValue, newValue in
                     print("Count changed from \(oldValue) to \(newValue)")
                     self.saveState()
@@ -27,14 +32,14 @@ struct CounterInnerView: View {
                 Button("Decrement") {
                     self.viewModel.decrement()
                 }
-                .font(.custom("Courier New", size: 12))
+                .font(.custom("Courier New", size: 14))
                 .bold()
                 .fixedSize(horizontal: true, vertical: false)
                 .padding()
                 Button("Increment") {
                     self.viewModel.increment()
                 }
-                .font(.custom("Courier New", size: 12))
+                .font(.custom("Courier New", size: 14))
                 .bold()
                 .fixedSize(horizontal: true, vertical: false)
                 .padding()
@@ -58,4 +63,14 @@ struct CounterInnerView: View {
             print("Error saving counter: \(error)")
         }
     }
+}
+
+#Preview {
+    CounterInnerView(
+        viewModel: CounterViewModel(counterModel: CounterModel(
+            name: "Counter1",
+            count: 0,
+            date: Date()
+        ))
+    )
 }
