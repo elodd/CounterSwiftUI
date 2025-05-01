@@ -34,16 +34,14 @@ struct CounterInnerView: View {
                 }
                 .bold()
                 .fixedSize(horizontal: true, vertical: false)
-                .padding()
                 Button("Increment") {
                     self.viewModel.increment()
                 }
                 .bold()
                 .fixedSize(horizontal: true, vertical: false)
-                .padding()
             }
         }
-        .frame(width: 300, height: 250)
+        .frame(width: 340, height: 250)
         .background(Color.init(red: 0.0, green: 0.0, blue: 1.0).opacity(0.2))
     }
 
