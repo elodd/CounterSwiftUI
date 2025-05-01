@@ -45,13 +45,6 @@ struct CounterInnerView: View {
         }
         .frame(width: 300, height: 250)
         .background(Color.init(red: 0.0, green: 0.0, blue: 1.0).opacity(0.2))
-        .onAppear() {
-            self.addCounter()
-        }
-    }
-
-    func addCounter() {
-        self.modelContext.insert(self.viewModel.counterModel)
     }
 
     func saveState() {

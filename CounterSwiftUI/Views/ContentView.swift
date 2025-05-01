@@ -11,7 +11,9 @@ import SwiftData
 public struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     @Query(sort: \CounterModel.date) var counterModels: [CounterModel]
-    @State var showCounter = false
+    @State private var path = NavigationPath()
+
+    @State private var showCounter: Bool = false
 
     public var body: some View {
         NavigationStack {
@@ -39,24 +41,25 @@ public struct ContentView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Image(systemName: "plus")
-                        .accentColor(.black)
-                        .onTapGesture(perform: {
-                            showCounter.toggle()
-                        })
+                    Button("Add counter", systemImage: "plus", action: self.addCounter)
                 }
             }
             .navigationTitle("Counters")
-            .navigationDestination(isPresented: self.$showCounter) {
+            .navigationDestination(isPresented: $showCounter) {
+                let counterModel: CounterModel = self.counterModels.last!
                 CounterView(
                     viewModel: CounterViewModel(
-                        counterModel: CounterModel(
-                            name: "Counter"
-                        )
-                    )
+                        counterModel: counterModel)
                 )
             }
         }
+    }
+
+    func addCounter() {
+        let newCounter = CounterModel(name: "Counter\(self.counterModels.count)")
+        self.modelContext.insert(newCounter)
+        self.path.append(newCounter)
+        self.showCounter = true
     }
 
     func deleteCounter(_ indexSet: IndexSet) {
