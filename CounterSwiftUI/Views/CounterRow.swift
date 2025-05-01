@@ -11,12 +11,13 @@ struct CounterRow: View {
     @Bindable var counterModel: CounterModel
 
     var body: some View {
-        NavigationLink(
-            "\(counterModel.name), \(counterModel.countString())\n \(counterModel.dateString())",
-            destination: CounterInnerView(
-                viewModel: CounterViewModel(counterModel: self.counterModel)
-            )
-        )
+        NavigationLink(destination: {
+            CounterInnerView(viewModel: CounterViewModel(counterModel: self.counterModel))
+
+        }, label: {
+            Text("\(counterModel.nameString())\n\( counterModel.countString())\n\( counterModel.dateString())")
+                .multilineTextAlignment(.leading)
+        })
     }
 }
 
