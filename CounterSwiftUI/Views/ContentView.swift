@@ -51,7 +51,7 @@ public struct ContentView: View {
                 CounterView(
                     viewModel: CounterViewModel(
                         counterModel: CounterModel(
-                            name: "Counter\(self.counterModels.count + 1)"
+                            name: "Counter"
                         )
                     )
                 )
