@@ -17,15 +17,13 @@ struct CounterInnerView: View {
                 self.viewModel.counterModel.dateString(),
                 systemImage: "calendar"
             )
-                .dynamicTypeSize(.small)
-                .padding()
             Label(self.viewModel.counterModel.nameString(), systemImage: "person")
-                .padding()
             Label(self.viewModel.counterModel.countString(),
                 systemImage: "digitalcrown.arrow.counterclockwise"
             )
                 .onChange(of: self.viewModel.counterModel.count) { oldValue, newValue in
                     print("Count changed from \(oldValue) to \(newValue)")
+                    print("\(self.viewModel.counterModel.description)")
                     self.saveState()
                 }
             HStack {
@@ -33,12 +31,10 @@ struct CounterInnerView: View {
                     self.viewModel.decrement()
                 }
                 .bold()
-                .fixedSize(horizontal: true, vertical: false)
                 Button("Increment") {
                     self.viewModel.increment()
                 }
                 .bold()
-                .fixedSize(horizontal: true, vertical: false)
             }
         }
         .frame(width: 340, height: 250)

@@ -34,3 +34,9 @@ class CounterModel: Identifiable {
         "Date: \(self.date.formatted(date: .numeric, time: .shortened))"
     }
 }
+
+extension CounterModel: CustomStringConvertible {
+    var description: String {
+        return "[CounterModel] id: \(self.id)\nname: \(self.nameString())\ncount: \(self.countString())\ndate: \(self.dateString())"
+    }
+}
