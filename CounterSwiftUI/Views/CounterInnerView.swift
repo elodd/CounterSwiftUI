@@ -53,7 +53,7 @@ struct CounterInnerView: View {
 #Preview {
     CounterInnerView(
         viewModel: CounterViewModel(counterModel: CounterModel(
-            name: "Counter1",
+            name: "Counter0",
             count: 0,
             date: Date()
         ))
@@ -63,6 +63,6 @@ struct CounterInnerView: View {
 import Playgrounds
 
 #Playground {
-    let counterModel = CounterModel(name: "Counter1", count: 0, date: Date())
+    let counterModel = CounterModel(name: "Counter0", count: 0, date: Date())
     print(counterModel.description)
 }
