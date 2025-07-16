@@ -59,3 +59,10 @@ struct CounterInnerView: View {
         ))
     )
 }
+
+import Playgrounds
+
+#Playground {
+    let counterModel = CounterModel(name: "Counter1", count: 0, date: Date())
+    print(counterModel.description)
+}
