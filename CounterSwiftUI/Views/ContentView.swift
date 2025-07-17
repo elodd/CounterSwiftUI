@@ -47,8 +47,7 @@ public struct ContentView: View {
             }
             .navigationTitle("Counters")
             .navigationDestination(isPresented: $showCounter) {
-                if self.counterModels.isEmpty == false {
-                    let counterModel: CounterModel = self.counterModels.last!
+                if self.counterModels.isEmpty == false, let counterModel: CounterModel = self.counterModels.last {
                     CounterView(
                         viewModel: CounterViewModel(
                             counterModel: counterModel)
