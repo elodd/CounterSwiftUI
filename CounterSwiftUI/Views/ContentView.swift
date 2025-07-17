@@ -28,6 +28,7 @@ public struct ContentView: View {
                         .font(.headline)
                         .padding()
                     Spacer()
+                    Spacer()
                 } else {
                     List {
                         ForEach(counterModels, id: \.id) { counterModel in
