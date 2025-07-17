@@ -37,6 +37,6 @@ class CounterModel: Identifiable {
 
 extension CounterModel: CustomStringConvertible {
     var description: String {
-        return "[CounterModel] id: \(self.id), name: \(self.name), count: \(self.count), date: \(self.date)"
+        return "[[CounterModel] id: \(self.id), name: \(self.name), count: \(self.count), date: \(self.date)]"
     }
 }
