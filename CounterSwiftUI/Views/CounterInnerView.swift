@@ -44,6 +44,7 @@ struct CounterInnerView: View {
     func saveState() {
         do {
             try self.modelContext.save()
+            print("Saved the counter state")
         } catch {
             print("Error saving counter: \(error)")
         }
