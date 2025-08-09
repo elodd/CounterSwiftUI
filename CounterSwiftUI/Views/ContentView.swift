@@ -20,7 +20,7 @@ public struct ContentView: View {
             VStack {
                 if self.counterModels.isEmpty {
                     Spacer()
-                    Image(systemName: "plus.circle")
+                    Image(systemName: "plus")
                         .font(.system(size: 100))
                         .foregroundColor(.gray)
                         .padding()
