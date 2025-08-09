@@ -44,6 +44,13 @@ public struct ContentView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Add counter", systemImage: "plus", action: self.addCounter)
                 }
+                ToolbarItemGroup(placement: .bottomBar) {
+                   Text("Version X.Y.Z (xyz)")
+                       .font(.footnote)
+                       .foregroundColor(.secondary)
+                       .frame(maxWidth: .infinity)
+                       .textSelection(.enabled)
+                   }
             }
             .navigationTitle("Counters")
             .navigationDestination(isPresented: $showCounter) {
