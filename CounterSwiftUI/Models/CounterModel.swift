@@ -40,3 +40,13 @@ extension CounterModel: CustomStringConvertible {
         return "[[CounterModel] id: \(self.id), name: \(self.name), count: \(self.count), date: \(self.date)]"
     }
 }
+
+extension CounterModel {
+    static var defaults: [CounterModel] {
+        [
+            CounterModel(name: "Counter0", count: 0),
+            CounterModel(name: "Counter1", count: 1),
+            CounterModel(name: "Counter2", count: 2)
+        ]
+    }
+}

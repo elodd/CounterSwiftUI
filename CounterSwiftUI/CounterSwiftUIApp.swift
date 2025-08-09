@@ -13,6 +13,7 @@ struct CounterSwiftUIApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: CounterModel.self)
+        .modelContainer(
+            CounterContainer.createContainer(shouldCreateDefaults: false))
     }
 }

@@ -73,6 +73,5 @@ public struct ContentView: View {
 }
 
 #Preview {
-    // TODO: Prefil SwiftData modelContainer with data
     ContentView()
 }
