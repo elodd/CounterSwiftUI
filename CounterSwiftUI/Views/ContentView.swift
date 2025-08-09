@@ -45,7 +45,7 @@ public struct ContentView: View {
                     Button("Add counter", systemImage: "plus", action: self.addCounter)
                 }
                 ToolbarItemGroup(placement: .bottomBar) {
-                   Text("Version X.Y.Z (xyz)")
+                   Text("X.Y.Z (xyz)")
                        .font(.footnote)
                        .foregroundColor(.secondary)
                        .frame(maxWidth: .infinity)

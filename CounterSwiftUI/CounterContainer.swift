@@ -10,17 +10,17 @@ import SwiftData
 import SwiftUI
 
 actor CounterContainer {
-    @AppStorage("isAddedToContainer") static var isAddedToContainer: Bool = false
+    @AppStorage("isDefaultsAddedToContainer") static var isDefaultsAddedToContainer: Bool = false
     @MainActor
     static public func createContainer() -> ModelContainer {
         let schema = Schema([CounterModel.self])
         let configuration = ModelConfiguration()
         let container = try! ModelContainer(for: schema, configurations: configuration)
-        if isAddedToContainer == false {
+        if isDefaultsAddedToContainer == false {
             CounterModel.defaults.forEach { model in
                 container.mainContext.insert(model)
             }
-            isAddedToContainer = true
+            isDefaultsAddedToContainer = true
         }
         return container
     }
