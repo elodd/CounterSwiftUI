@@ -24,7 +24,7 @@ public struct ContentView: View {
                         .font(.system(size: 100))
                         .foregroundColor(.gray)
                         .padding()
-                    Text("Add a new counter by tapping the plus (+) button.")
+                    Text("Add a new counter by tapping the plus (+) button on the top right.")
                         .font(.headline)
                         .padding()
                     Spacer()
