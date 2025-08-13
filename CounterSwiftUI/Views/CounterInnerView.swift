@@ -43,6 +43,7 @@ struct CounterInnerView: View {
 
     func saveState() {
         do {
+            self.viewModel.updateDate()
             try self.modelContext.save()
             print("Saved the counter state")
         } catch {

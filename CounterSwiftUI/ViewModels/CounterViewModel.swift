@@ -18,8 +18,12 @@ class CounterViewModel {
     func increment() {
         self.counterModel.count += 1
     }
-    
+
     func decrement() {
         self.counterModel.count -= 1
+    }
+
+    func updateDate() {
+        self.counterModel.date = Date()
     }
 }
