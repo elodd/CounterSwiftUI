@@ -24,7 +24,7 @@ public struct ContentView: View {
                         .font(.system(size: 100))
                         .foregroundColor(.gray)
                         .padding()
-                    Text("Add a new counter by tapping the plus (+) button on the top right.")
+                    Text(StaticStrings.emptyViewMessage)
                         .font(.headline)
                         .padding()
                     Spacer()
@@ -42,7 +42,11 @@ public struct ContentView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Add counter", systemImage: "plus", action: self.addCounter)
+                    Button(
+                        StaticStrings.addCounterButtonTitle,
+                        systemImage: "plus",
+                        action: self.addCounter
+                    )
                 }
                 ToolbarItemGroup(placement: .bottomBar) {
                    Text("A.B.C (xyz)")
@@ -52,7 +56,7 @@ public struct ContentView: View {
                        .textSelection(.enabled)
                    }
             }
-            .navigationTitle("Counters")
+            .navigationTitle(StaticStrings.navigationTitle)
             .navigationDestination(isPresented: $showCounter) {
                 if self.counterModels.isEmpty == false, let counterModel: CounterModel = self.counterModels.last {
                     CounterView(
@@ -65,7 +69,9 @@ public struct ContentView: View {
     }
 
     func addCounter() {
-        let newCounter = CounterModel(name: "Counter\(self.counterModels.count)")
+        let newCounter = CounterModel(
+            name: "\(StaticStrings.counterTitle)\(self.counterModels.count)"
+        )
         self.modelContext.insert(newCounter)
         self.path.append(newCounter)
         self.showCounter = true

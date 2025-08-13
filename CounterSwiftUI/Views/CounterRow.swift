@@ -15,12 +15,15 @@ struct CounterRow: View {
             CounterInnerView(viewModel: CounterViewModel(counterModel: self.counterModel))
 
         }, label: {
-            Text("\(counterModel.nameString())\n\( counterModel.countString())\n\( counterModel.dateString())")
+            Text("\(counterModel.nameString())\(StaticStrings.newLine)\( counterModel.countString())\(StaticStrings.newLine)\( counterModel.dateString())")
                 .multilineTextAlignment(.leading)
         })
     }
 }
 
 #Preview {
-    CounterRow(counterModel: CounterModel(name: "Counter1", count: 0, date: Date()))
+    CounterRow(
+        counterModel: CounterModel(
+            name: "\(StaticStrings.counterTitle)0")
+    )
 }

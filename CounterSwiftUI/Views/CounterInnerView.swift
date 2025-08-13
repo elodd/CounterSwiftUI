@@ -27,11 +27,11 @@ struct CounterInnerView: View {
                     self.saveState()
                 }
             HStack {
-                Button("Decrement") {
+                Button(StaticStrings.decrementButtonTitle) {
                     self.viewModel.decrement()
                 }
                 .bold()
-                Button("Increment") {
+                Button(StaticStrings.incrementButtonTitle) {
                     self.viewModel.increment()
                 }
                 .bold()
@@ -55,7 +55,7 @@ struct CounterInnerView: View {
 #Preview {
     CounterInnerView(
         viewModel: CounterViewModel(counterModel: CounterModel(
-            name: "Counter0",
+            name: "\(StaticStrings.counterTitle)0",
             count: 0,
             date: Date()
         ))
@@ -65,6 +65,10 @@ struct CounterInnerView: View {
 import Playgrounds
 
 #Playground {
-    let counterModel = CounterModel(name: "Counter0", count: 0, date: Date())
+    let counterModel = CounterModel(
+        name: "\(StaticStrings.counterTitle)0",
+        count: 0,
+        date: Date()
+    )
     print(counterModel.description)
 }
