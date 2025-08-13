@@ -10,15 +10,15 @@ import SwiftData
 import SwiftUI
 
 actor CounterContainer {
-    @AppStorage("prefilledCounters") static var prefilledCounters: Bool = false
+    @AppStorage("prefilledExamples") static var prefilledExamples: Bool = false
     @MainActor
     static public func createContainer() -> ModelContainer {
         let schema = Schema([CounterModel.self])
         let configuration = ModelConfiguration()
         let container = try! ModelContainer(for: schema, configurations: configuration)
-        if prefilledCounters == false {
+        if prefilledExamples == false {
             CounterModel.defaults.forEach { container.mainContext.insert($0) }
-            prefilledCounters = true
+            prefilledExamples = true
         }
         return container
     }
