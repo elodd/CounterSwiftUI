@@ -10,7 +10,7 @@ import SwiftData
 
 public struct ContentView: View {
     @Environment(\.modelContext) var modelContext
-    @Query(sort: \CounterModel.date) var counterModels: [CounterModel]
+    @Query(sort: \CounterModel.name) var counterModels: [CounterModel]
     @State private var path = NavigationPath()
 
     @State private var showCounter: Bool = false
