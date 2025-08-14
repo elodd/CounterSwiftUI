@@ -31,15 +31,14 @@ class CounterModel: Identifiable {
     }
 
     func dateString() -> String {
-        let dateLabelTitle = String(localized: "dateLabelTitle")
         let dateFormat = self.date.formatted(date: .numeric, time: .shortened)
-        return "\(dateLabelTitle) \(dateFormat)"
+        return "\(String(localized: "dateLabelTitle")) \(dateFormat)"
     }
 }
 
 extension CounterModel: CustomStringConvertible {
     var description: String {
-        return "[[\(Self.self)] id: \(self.id), name: \(self.name), count: \(self.count), date: \(self.date)]"
+        return "[[CounterModel] id: \(self.id), name: \(self.name), count: \(self.count), date: \(self.date)]"
     }
 }
 
