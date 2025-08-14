@@ -15,7 +15,9 @@ struct CounterRow: View {
             CounterInnerView(viewModel: CounterViewModel(counterModel: self.counterModel))
 
         }, label: {
-            Text("\(counterModel.nameString())\(StaticStrings.newLine)\( counterModel.countString())\(StaticStrings.newLine)\( counterModel.dateString())")
+            Text("\(counterModel.nameString())\n" +
+                 "\(counterModel.countString())\n" +
+                 "\(counterModel.dateString())")
                 .multilineTextAlignment(.leading)
         })
     }
@@ -24,6 +26,7 @@ struct CounterRow: View {
 #Preview {
     CounterRow(
         counterModel: CounterModel(
-            name: "\(StaticStrings.counterTitle)0")
+            name: String(format: "\(String(localized: "counterTitle"))0")
+        )
     )
 }

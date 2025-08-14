@@ -23,30 +23,33 @@ class CounterModel: Identifiable {
     }
     
     func countString() -> String {
-        "Count: \(self.count)"
+        "\(String(localized: "countLabelTitle")) \(self.count)"
     }
 
     func nameString() -> String {
-        "Name: \(self.name)"
+        "\(String(localized: "nameLabelTitle")) \(self.name)"
     }
 
     func dateString() -> String {
-        "Date: \(self.date.formatted(date: .numeric, time: .shortened))"
+        let dateLabelTitle = String(localized: "dateLabelTitle")
+        let dateFormat = self.date.formatted(date: .numeric, time: .shortened)
+        return "\(dateLabelTitle) \(dateFormat)"
     }
 }
 
 extension CounterModel: CustomStringConvertible {
     var description: String {
-        return "[[CounterModel] id: \(self.id), name: \(self.name), count: \(self.count), date: \(self.date)]"
+        return "[[\(Self.self)] id: \(self.id), name: \(self.name), count: \(self.count), date: \(self.date)]"
     }
 }
 
 extension CounterModel {
     static var defaults: [CounterModel] {
-        [
-            CounterModel(name: "Counter0", count: 0),
-            CounterModel(name: "Counter1", count: 1),
-            CounterModel(name: "Counter2", count: 2)
+        let counterKey = String(localized: "counterTitle")
+        return [
+            CounterModel(name: String(format: "\(counterKey)0"), count: 0),
+            CounterModel(name: String(format: "\(counterKey)1"), count: 1),
+            CounterModel(name: String(format: "\(counterKey)2"), count: 2)
         ]
     }
 }

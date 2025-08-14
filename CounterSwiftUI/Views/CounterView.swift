@@ -25,7 +25,10 @@ struct CounterView: View {
 #Preview {
     @Previewable
     @State var viewModel: CounterViewModel = .init(
-        counterModel: CounterModel(name: "\(StaticStrings.counterTitle)1", count: 1)
+        counterModel: CounterModel(
+            name: String(format: "\(String(localized: "counterTitle"))1"),
+            count: 1
+        )
                                     
     )
     CounterView(viewModel: viewModel)

@@ -24,7 +24,7 @@ public struct ContentView: View {
                         .font(.system(size: 100))
                         .foregroundColor(.gray)
                         .padding()
-                    Text(StaticStrings.emptyViewMessage)
+                    Text(.emptyViewMessage)
                         .font(.headline)
                         .padding()
                     Spacer()
@@ -43,7 +43,7 @@ public struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(
-                        StaticStrings.addCounterButtonTitle,
+                        .addCounterButtonTitle,
                         systemImage: "plus",
                         action: self.addCounter
                     )
@@ -56,7 +56,7 @@ public struct ContentView: View {
                        .textSelection(.enabled)
                    }
             }
-            .navigationTitle(StaticStrings.navigationTitle)
+            .navigationTitle(.navigationTitle)
             .navigationDestination(isPresented: $showCounter) {
                 if self.counterModels.isEmpty == false, let counterModel: CounterModel = self.counterModels.last {
                     CounterView(
@@ -69,8 +69,9 @@ public struct ContentView: View {
     }
 
     func addCounter() {
+        let counterName = String(localized: "counterTitle")
         let newCounter = CounterModel(
-            name: "\(StaticStrings.counterTitle)\(self.counterModels.count)"
+            name: String(format: "\(counterName)\(self.counterModels.count)")
         )
         self.modelContext.insert(newCounter)
         self.path.append(newCounter)
