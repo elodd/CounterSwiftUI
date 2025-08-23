@@ -1,0 +1,79 @@
+//
+//  CounterInnerView.swift
+//  CounterSwiftUI
+//
+//  Created by eloddobos on 2025-02-08.
+//
+
+import SwiftUI
+
+struct CounterInnerView: View {
+    @Bindable var viewModel: CounterViewModel
+    @Environment(\.modelContext) var modelContext
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Label(
+                self.viewModel.counterModel.dateString(),
+                systemImage: "calendar"
+            )
+                .font(.system(size: 20))
+            Label(self.viewModel.counterModel.nameString(), systemImage: "person")
+                .font(.system(size: 20))
+            Label(self.viewModel.counterModel.countString(),
+                systemImage: "digitalcrown.arrow.counterclockwise"
+            )
+                .font(.system(size: 20))
+                .onChange(of: self.viewModel.counterModel.count) { oldValue, newValue in
+                    print("Count changed from \(oldValue) to \(newValue)")
+                    print("\(self.viewModel.counterModel.description)")
+                    self.saveState()
+                }
+            HStack(alignment: .center) {
+                Button(.decrementButtonTitle) {
+                    self.viewModel.decrement()
+                }
+                .bold()
+                Button(.incrementButtonTitle) {
+                    self.viewModel.increment()
+                }
+                .bold()
+            }
+        }
+        .frame(width: 340, height: 250)
+        .background(Color.init(red: 0.0, green: 0.0, blue: 1.0).opacity(0.2))
+    }
+
+    func saveState() {
+        do {
+            self.viewModel.updateDate()
+            try self.modelContext.save()
+            print("Saved the counter state")
+        } catch {
+            print("Error saving counter: \(error)")
+        }
+    }
+}
+
+#Preview {
+    let counterName = String(localized: "counterTitle")
+    CounterInnerView(
+        viewModel: CounterViewModel(counterModel: CounterModel(
+            name: String(format: "\(counterName)0"),
+            count: 0,
+            date: Date()
+        ))
+    )
+}
+
+import Playgrounds
+
+#Playground {
+    let counterName = String(localized: "counterTitle")
+    let counterModel = CounterModel(
+        name: String(format: "\(counterName)0"),
+        count: 0,
+        date: Date()
+    )
+    print(counterModel.description)
+}
