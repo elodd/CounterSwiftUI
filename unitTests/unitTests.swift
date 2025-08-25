@@ -1,6 +1,6 @@
 //
-//  Tests.swift
-//  Tests
+//  unitTests.swift
+//  unitTests
 //
 //  Created by eloddobos on 2025-08-07.
 //
@@ -8,7 +8,7 @@
 import XCTest
 import CounterSwiftUI
 
-final class Tests: XCTestCase {
+final class unitTests: XCTestCase {
 
     func testCounterIncrement() throws {
         let counterModel = CounterModel(name: "Test Counter")

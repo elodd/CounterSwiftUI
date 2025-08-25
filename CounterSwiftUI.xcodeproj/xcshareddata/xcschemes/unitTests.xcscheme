@@ -20,8 +20,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D28680C52E44798900D5A933"
-               BuildableName = "Tests.xctest"
-               BlueprintName = "Tests"
+               BuildableName = "unitTests.xctest"
+               BlueprintName = "unitTests"
                ReferencedContainer = "container:CounterSwiftUI.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -54,15 +54,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D2DAFC842D57BC53004831FF"
-            BuildableName = "CounterSwiftUI.app"
-            BlueprintName = "CounterSwiftUI"
-            ReferencedContainer = "container:CounterSwiftUI.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

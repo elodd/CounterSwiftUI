@@ -17,41 +17,41 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D28680C62E44798900D5A933 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D28680C62E44798900D5A933 /* unitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = unitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2DAFC852D57BC53004831FF /* CounterSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CounterSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		D28680D02E44823800D5A933 /* Exceptions for "CounterSwiftUI" folder in "Tests" target */ = {
+		D28680D02E44823800D5A933 /* Exceptions for "CounterSwiftUI" folder in "unitTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Models/CounterModel.swift,
 				ViewModels/CounterViewModel.swift,
 			);
-			target = D28680C52E44798900D5A933 /* Tests */;
+			target = D28680C52E44798900D5A933 /* unitTests */;
 		};
-		D2A646C92E4D158A002E02D2 /* Exceptions for "Tests" folder in "Tests" target */ = {
+		D2A646C92E4D158A002E02D2 /* Exceptions for "unitTests" folder in "unitTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = D28680C52E44798900D5A933 /* Tests */;
+			target = D28680C52E44798900D5A933 /* unitTests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		D28680C72E44798900D5A933 /* Tests */ = {
+		D28680C72E44798900D5A933 /* unitTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				D2A646C92E4D158A002E02D2 /* Exceptions for "Tests" folder in "Tests" target */,
+				D2A646C92E4D158A002E02D2 /* Exceptions for "unitTests" folder in "unitTests" target */,
 			);
-			path = Tests;
+			path = unitTests;
 			sourceTree = "<group>";
 		};
 		D2DAFC872D57BC53004831FF /* CounterSwiftUI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				D28680D02E44823800D5A933 /* Exceptions for "CounterSwiftUI" folder in "Tests" target */,
+				D28680D02E44823800D5A933 /* Exceptions for "CounterSwiftUI" folder in "unitTests" target */,
 			);
 			path = CounterSwiftUI;
 			sourceTree = "<group>";
@@ -80,7 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				D2DAFC872D57BC53004831FF /* CounterSwiftUI */,
-				D28680C72E44798900D5A933 /* Tests */,
+				D28680C72E44798900D5A933 /* unitTests */,
 				D2DAFC862D57BC53004831FF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -89,7 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				D2DAFC852D57BC53004831FF /* CounterSwiftUI.app */,
-				D28680C62E44798900D5A933 /* Tests.xctest */,
+				D28680C62E44798900D5A933 /* unitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -97,9 +97,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D28680C52E44798900D5A933 /* Tests */ = {
+		D28680C52E44798900D5A933 /* unitTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D28680CE2E44798900D5A933 /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildConfigurationList = D28680CE2E44798900D5A933 /* Build configuration list for PBXNativeTarget "unitTests" */;
 			buildPhases = (
 				D28680C22E44798900D5A933 /* Sources */,
 				D28680C32E44798900D5A933 /* Frameworks */,
@@ -111,13 +111,13 @@
 				D28680CB2E44798900D5A933 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				D28680C72E44798900D5A933 /* Tests */,
+				D28680C72E44798900D5A933 /* unitTests */,
 			);
-			name = Tests;
+			name = unitTests;
 			packageProductDependencies = (
 			);
 			productName = Tests;
-			productReference = D28680C62E44798900D5A933 /* Tests.xctest */;
+			productReference = D28680C62E44798900D5A933 /* unitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		D2DAFC842D57BC53004831FF /* CounterSwiftUI */ = {
@@ -176,7 +176,7 @@
 			projectRoot = "";
 			targets = (
 				D2DAFC842D57BC53004831FF /* CounterSwiftUI */,
-				D28680C52E44798900D5A933 /* Tests */,
+				D28680C52E44798900D5A933 /* unitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -450,7 +450,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D28680CE2E44798900D5A933 /* Build configuration list for PBXNativeTarget "Tests" */ = {
+		D28680CE2E44798900D5A933 /* Build configuration list for PBXNativeTarget "unitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D28680CC2E44798900D5A933 /* Debug */,
