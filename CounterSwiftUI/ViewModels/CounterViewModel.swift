@@ -8,7 +8,7 @@
 import SwiftUI
 
 @Observable
-class CounterViewModel {
+final class CounterViewModel {
     var counterModel: CounterModel
 
     init(counterModel: CounterModel) {
