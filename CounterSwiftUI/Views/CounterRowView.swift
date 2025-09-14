@@ -1,5 +1,5 @@
 //
-//  CounterRow.swift
+//  CounterRowView.swift
 //  CounterSwiftUI
 //
 //  Created by eloddobos on 2025-03-02.
@@ -7,13 +7,12 @@
 
 import SwiftUI
 
-struct CounterRow: View {
+struct CounterRowView: View {
     @Bindable var counterViewModel: CounterViewModel
 
     var body: some View {
         NavigationLink(destination: {
-            CounterInnerView(viewModel: self.counterViewModel)
-
+            CounterDetailView(viewModel: self.counterViewModel)
         }, label: {
             Text("\(counterViewModel.nameString())\n" +
                  "\(counterViewModel.countString())\n" +
@@ -26,7 +25,7 @@ struct CounterRow: View {
 
 #Preview {
     let counterName = String(localized: "counterTitle")
-    CounterRow(
+    CounterRowView(
         counterViewModel: CounterViewModel(counterModel: CounterModel(
             name: "\(counterName)0")
         )

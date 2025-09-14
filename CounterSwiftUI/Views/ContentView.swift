@@ -33,7 +33,7 @@ public struct ContentView: View {
                     List {
                         ForEach(counterModels) { counterModel in
                             VStack {
-                                CounterRow(counterViewModel: CounterViewModel(
+                                CounterRowView(counterViewModel: CounterViewModel(
                                     counterModel: counterModel
                                 ))
                             }
@@ -61,7 +61,7 @@ public struct ContentView: View {
             .navigationTitle(.navigationTitle)
             .navigationDestination(isPresented: $showCounter) {
                 if self.counterModels.isEmpty == false, let counterModel: CounterModel = self.counterModels.last {
-                    CounterInnerView(
+                    CounterDetailView(
                         viewModel: CounterViewModel(
                             counterModel: counterModel)
                     )

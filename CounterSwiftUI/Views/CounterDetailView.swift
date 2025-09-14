@@ -1,5 +1,5 @@
 //
-//  CounterInnerView.swift
+//  CounterDetailView.swift
 //  CounterSwiftUI
 //
 //  Created by eloddobos on 2025-02-08.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CounterInnerView: View {
+struct CounterDetailView: View {
     @Bindable var viewModel: CounterViewModel
     @Environment(\.modelContext) var modelContext
     
@@ -57,7 +57,7 @@ struct CounterInnerView: View {
 
 #Preview {
     let counterName = String(localized: "counterTitle")
-    CounterInnerView(
+    CounterDetailView(
         viewModel: CounterViewModel(counterModel: CounterModel(
             name: "\(counterName)0")
         )
