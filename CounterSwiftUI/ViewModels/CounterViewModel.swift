@@ -15,6 +15,19 @@ final class CounterViewModel {
         self.counterModel = counterModel
     }
 
+    func countString() -> String {
+        "\(String(localized: "countLabelTitle")) \(self.counterModel.count)"
+    }
+
+    func nameString() -> String {
+        "\(String(localized: "nameLabelTitle")) \(self.counterModel.name)"
+    }
+
+    func dateString() -> String {
+        let dateFormat = self.counterModel.date.formatted(date: .numeric, time: .shortened)
+        return "\(String(localized: "dateLabelTitle")) \(dateFormat)"
+    }
+
     func increment() {
         self.counterModel.count += 1
     }

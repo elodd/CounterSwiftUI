@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct CounterRow: View {
-    @Bindable var counterModel: CounterModel
+    @Bindable var counterViewModel: CounterViewModel
 
     var body: some View {
         NavigationLink(destination: {
-            CounterInnerView(viewModel: CounterViewModel(counterModel: self.counterModel))
+            CounterInnerView(viewModel: self.counterViewModel)
 
         }, label: {
-            Text("\(counterModel.nameString())\n" +
-                 "\(counterModel.countString())\n" +
-                 "\(counterModel.dateString())")
+            Text("\(counterViewModel.nameString())\n" +
+                 "\(counterViewModel.countString())\n" +
+                 "\(counterViewModel.dateString())")
                 .font(.system(size: 20))
                 .multilineTextAlignment(.leading)
         })
@@ -25,9 +25,10 @@ struct CounterRow: View {
 }
 
 #Preview {
+    let counterName = String(localized: "counterTitle")
     CounterRow(
-        counterModel: CounterModel(
-            name: String(format: "\(String(localized: "counterTitle"))0")
+        counterViewModel: CounterViewModel(counterModel: CounterModel(
+            name: "\(counterName)0")
         )
     )
 }

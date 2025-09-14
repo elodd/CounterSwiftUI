@@ -33,7 +33,9 @@ public struct ContentView: View {
                     List {
                         ForEach(counterModels) { counterModel in
                             VStack {
-                                CounterRow(counterModel: counterModel)
+                                CounterRow(counterViewModel: CounterViewModel(
+                                    counterModel: counterModel
+                                ))
                             }
                         }
                         .onDelete(perform: self.deleteCounter)

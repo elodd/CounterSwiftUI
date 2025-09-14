@@ -14,13 +14,13 @@ struct CounterInnerView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Label(
-                self.viewModel.counterModel.dateString(),
+                self.viewModel.dateString(),
                 systemImage: "calendar"
             )
                 .font(.system(size: 20))
-            Label(self.viewModel.counterModel.nameString(), systemImage: "person")
+            Label(self.viewModel.nameString(), systemImage: "person")
                 .font(.system(size: 20))
-            Label(self.viewModel.counterModel.countString(),
+            Label(self.viewModel.countString(),
                 systemImage: "digitalcrown.arrow.counterclockwise"
             )
                 .font(.system(size: 20))
@@ -59,10 +59,8 @@ struct CounterInnerView: View {
     let counterName = String(localized: "counterTitle")
     CounterInnerView(
         viewModel: CounterViewModel(counterModel: CounterModel(
-            name: String(format: "\(counterName)0"),
-            count: 0,
-            date: Date()
-        ))
+            name: "\(counterName)0")
+        )
     )
 }
 
@@ -71,9 +69,7 @@ import Playgrounds
 #Playground {
     let counterName = String(localized: "counterTitle")
     let counterModel = CounterModel(
-        name: String(format: "\(counterName)0"),
-        count: 0,
-        date: Date()
+        name: String(format: "\(counterName)0")
     )
     print(counterModel.description)
 }

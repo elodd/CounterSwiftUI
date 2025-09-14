@@ -10,29 +10,15 @@ import SwiftData
 
 @Model
 class CounterModel: Identifiable {
-    var id: String
+    var id: String = UUID().uuidString
     var date: Date
     var name: String
     var count: Int
     
     init(name: String, count: Int = 0, date: Date = Date()) {
-        self.id = UUID().uuidString
         self.name = name
         self.count = count
         self.date = date
-    }
-    
-    func countString() -> String {
-        "\(String(localized: "countLabelTitle")) \(self.count)"
-    }
-
-    func nameString() -> String {
-        "\(String(localized: "nameLabelTitle")) \(self.name)"
-    }
-
-    func dateString() -> String {
-        let dateFormat = self.date.formatted(date: .numeric, time: .shortened)
-        return "\(String(localized: "dateLabelTitle")) \(dateFormat)"
     }
 }
 
