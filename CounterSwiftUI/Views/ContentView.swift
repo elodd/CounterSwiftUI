@@ -71,9 +71,9 @@ public struct ContentView: View {
     }
 
     func addCounter() {
-        let counterName = String(localized: "counterTitle")
+        let counterTitle = String(localized: "counterTitle")
         let newCounter = CounterModel(
-            name: String(format: "\(counterName)\(self.counterModels.count)")
+            name: String(format: "\(counterTitle)\(self.counterModels.count)")
         )
         self.modelContext.insert(newCounter)
         self.path.append(newCounter)

@@ -56,10 +56,10 @@ struct CounterDetailView: View {
 }
 
 #Preview {
-    let counterName = String(localized: "counterTitle")
+    let counterTitle = String(localized: "counterTitle")
     CounterDetailView(
         viewModel: CounterViewModel(counterModel: CounterModel(
-            name: "\(counterName)0")
+            name: "\(counterTitle)0")
         )
     )
 }
@@ -67,9 +67,9 @@ struct CounterDetailView: View {
 import Playgrounds
 
 #Playground {
-    let counterName = String(localized: "counterTitle")
+    let counterTitle = String(localized: "counterTitle")
     let counterModel = CounterModel(
-        name: String(format: "\(counterName)0")
+        name: String(format: "\(counterTitle)0")
     )
     print(counterModel.description)
 }

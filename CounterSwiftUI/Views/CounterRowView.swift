@@ -24,10 +24,10 @@ struct CounterRowView: View {
 }
 
 #Preview {
-    let counterName = String(localized: "counterTitle")
+    let counterTitle = String(localized: "counterTitle")
     CounterRowView(
         counterViewModel: CounterViewModel(counterModel: CounterModel(
-            name: "\(counterName)0")
+            name: "\(counterTitle)0")
         )
     )
 }

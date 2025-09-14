@@ -28,7 +28,7 @@ final class unitTests: XCTestCase {
         XCTAssertFalse(dateString.isEmpty, "Date string should not be empty")
     }
 
-    func testCounterNameString() throws {
+    func testcounterTitleString() throws {
         let counterModel = CounterModel(name: "Test Counter")
         let viewModel = CounterViewModel(counterModel: counterModel)
         let nameString = viewModel.nameString()

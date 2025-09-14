@@ -36,11 +36,11 @@ extension CounterModel: CustomStringConvertible {
 
 extension CounterModel {
     static var defaults: [CounterModel] {
-        let counterName = String(localized: "counterTitle")
+        let counterTitle = String(localized: "counterTitle")
         return [
-            CounterModel(name: String(format: "\(counterName)0"), count: 0),
-            CounterModel(name: String(format: "\(counterName)1"), count: 1),
-            CounterModel(name: String(format: "\(counterName)2"), count: 2)
+            CounterModel(name: String(format: "\(counterTitle)0"), count: 0),
+            CounterModel(name: String(format: "\(counterTitle)1"), count: 1),
+            CounterModel(name: String(format: "\(counterTitle)2"), count: 2)
         ]
     }
 }
