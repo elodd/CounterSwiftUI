@@ -11,6 +11,10 @@ import SwiftUI
 final class CounterViewModel {
     var counterModel: CounterModel
 
+    var name: String {
+        counterModel.name
+    }
+
     init(counterModel: CounterModel) {
         self.counterModel = counterModel
     }
