@@ -15,11 +15,13 @@ actor CounterContainer {
     static public func createContainer() -> ModelContainer {
         let schema = Schema([CounterModel.self])
         let configuration = ModelConfiguration()
-        let container = try! ModelContainer(for: schema, configurations: configuration)
-        if prefilledExamples == false {
-            CounterModel.defaults.forEach { container.mainContext.insert($0) }
-            prefilledExamples = true
+        do {
+            let container = try! ModelContainer(for: schema, configurations: configuration)
+            if prefilledExamples == false {
+                CounterModel.defaults.forEach { container.mainContext.insert($0) }
+                prefilledExamples = true
+            }
+            return container
         }
-        return container
     }
 }
