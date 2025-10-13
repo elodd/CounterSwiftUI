@@ -17,6 +17,7 @@ final class unitTests: XCTestCase {
         viewModel.increment()
         viewModel.increment()
         viewModel.increment()
+        XCTAssertEqual(viewModel.counterModel.count, 4, "Counter should increment by 4")
         viewModel.decrement()
         XCTAssertEqual(viewModel.counterModel.count, 3, "Counter should increment by 3")
     }
