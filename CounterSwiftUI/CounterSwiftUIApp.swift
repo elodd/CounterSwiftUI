@@ -14,7 +14,7 @@ struct CounterSwiftUIApp: App {
             ContentView()
         }
         .modelContainer(
-            CounterContainer.createContainer()
+            try! CounterContainer.createContainer()
         )
     }
 }
