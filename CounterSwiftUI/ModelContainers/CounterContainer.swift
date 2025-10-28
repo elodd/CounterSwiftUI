@@ -12,11 +12,11 @@ import SwiftUI
 actor CounterContainer {
     @AppStorage("prefilledExamples") static var prefilledExamples: Bool = false
     @MainActor
-    static public func createContainer() throws -> ModelContainer {
+    static public func createContainer() -> ModelContainer {
         let schema = Schema([CounterModel.self])
         let configuration = ModelConfiguration()
         do {
-            let container = try ModelContainer(for: schema, configurations: configuration)
+            let container = try! ModelContainer(for: schema, configurations: configuration)
             if prefilledExamples == false {
                 CounterModel.defaults.forEach { container.mainContext.insert($0) }
                 prefilledExamples = true
