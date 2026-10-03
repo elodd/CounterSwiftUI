@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CounterDetailView: View {
     @Bindable var viewModel: CounterViewModel
