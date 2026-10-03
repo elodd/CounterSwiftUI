@@ -1,6 +1,5 @@
 # CounterSwiftUI
 
-[![Build](https://github.com/elodd/CounterSwiftUI/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/elodd/CounterSwiftUI/actions/workflows/build.yml)
 [![Tests](https://github.com/elodd/CounterSwiftUI/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/elodd/CounterSwiftUI/actions/workflows/tests.yml)
 
 A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftData and the Observation framework (`@Observable`).
@@ -71,18 +70,6 @@ Select the **CounterSwiftUI** scheme and run (⌘R). Run the tests with ⌘U.
 
 The tests (Swift Testing) cover the model, the view model (increment/decrement, formatted strings) and SwiftData insert/save/delete using an in-memory store.
 
-## CI & releases
+## CI
 
-GitHub Actions workflows (`.github/workflows/`), run on pushes to `main` and on pull requests:
-
-- **Tests** (`tests.yml`) — builds and runs the unit tests on an iPhone simulator.
-- **Build** (`build.yml`) — unsigned Release build for iOS devices.
-
-Pushing a tag `vX.Y.Z` also publishes a GitHub Release:
-
-```sh
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-The release uses the tag as `MARKETING_VERSION` and the workflow run number as `CURRENT_PROJECT_VERSION`, and attaches `CounterSwiftUI-vX.Y.Z-unsigned.ipa` with generated release notes. The IPA is unsigned and must be re-signed before it can be installed on a device.
+The **Tests** workflow (`.github/workflows/tests.yml`) builds and runs the unit tests on an iPhone simulator on every push to `main` and on pull requests.
