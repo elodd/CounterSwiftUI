@@ -1,5 +1,6 @@
 # CounterSwiftUI
 
+[![Build](https://github.com/elodd/CounterSwiftUI/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/elodd/CounterSwiftUI/actions/workflows/build.yml)
 [![Tests](https://github.com/elodd/CounterSwiftUI/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/elodd/CounterSwiftUI/actions/workflows/tests.yml)
 
 A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftData and the Observation framework (`@Observable`).
@@ -19,19 +20,17 @@ A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftDat
 - When there are no counters, a large grey **+** icon is shown with the message *"Add a new counter by tapping the plus (+) button on the top right."*
 
 **Counter detail**
-- Navigation title is the counter's name.
-- A light-blue panel (340×250 pt) with three labels:
-  - 📅 Last updated: *date and time*
-  - 👤 Name: *counter name*
-  - ⟲ Count: *current value*
-- **Decrement** and **Increment** buttons below.
+- Large navigation title showing the counter's name, on the grouped system background.
+- The count in large bold rounded digits (120 pt, shrinks to fit) on a rounded card; it animates as it changes and turns red when negative.
+- Two round buttons below: **−** (Decrement, grey) and **+** (Increment, accent colour).
+- *Last updated* date and time at the bottom, with a clock icon.
 
 ## How it behaves
 
 - **First launch:** three example counters are created — `Counter0` (0), `Counter1` (1), `Counter2` (2). This happens only once (tracked with `@AppStorage("prefilledExamples")`), so deleted examples do not come back.
 - **Add:** tapping **+** creates `Counter<N>` (N = current number of counters) with count 0 and opens its detail screen.
 - **Open:** tapping a row opens the counter's detail screen.
-- **Increment / Decrement:** changes the count by ±1. Counts can go below zero.
+- **Increment / Decrement:** changes the count by ±1, with a light haptic tap. Counts can go below zero.
 - **Save:** every count change updates *Last updated* to the current time and saves to SwiftData. Counters persist between launches.
 - **Delete:** swipe left on a row to delete the counter.
 
@@ -71,3 +70,19 @@ open CounterSwiftUI.xcodeproj
 Select the **CounterSwiftUI** scheme and run (⌘R). Run the tests with ⌘U.
 
 The tests (Swift Testing) cover the model, the view model (increment/decrement, formatted strings) and SwiftData insert/save/delete using an in-memory store.
+
+## CI & releases
+
+GitHub Actions workflows (`.github/workflows/`), run on pushes to `main` and on pull requests:
+
+- **Tests** (`tests.yml`) — builds and runs the unit tests on an iPhone simulator.
+- **Build** (`build.yml`) — unsigned Release build for iOS devices.
+
+Pushing a tag `vX.Y.Z` also publishes a GitHub Release:
+
+```sh
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+The release uses the tag as `MARKETING_VERSION` and the workflow run number as `CURRENT_PROJECT_VERSION`, and attaches `CounterSwiftUI-vX.Y.Z-unsigned.ipa` with generated release notes. The IPA is unsigned and must be re-signed before it can be installed on a device.
