@@ -5,6 +5,7 @@
 //  Created by eloddobos on 2025-02-08.
 //
 
+import SwiftData
 import SwiftUI
 
 @Observable
@@ -42,5 +43,10 @@ final class CounterViewModel {
 
     func updateDate() {
         self.counterModel.date = Date()
+    }
+
+    func save(in context: ModelContext) throws {
+        self.updateDate()
+        try context.save()
     }
 }
