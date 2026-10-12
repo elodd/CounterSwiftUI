@@ -275,4 +275,16 @@ struct CounterContainerTests {
 
         #expect(try counterCount(in: container) == 0)
     }
+
+    @Test func uiTestingArgumentInsertsExamples() throws {
+        let container = CounterContainer.createContainer(arguments: [CounterContainer.uiTestingArgument])
+        #expect(try counterCount(in: container) == 3)
+    }
+
+    @Test func uiTestingEmptyArgumentStartsEmpty() throws {
+        let container = CounterContainer.createContainer(
+            arguments: [CounterContainer.uiTestingArgument, CounterContainer.uiTestingEmptyArgument]
+        )
+        #expect(try counterCount(in: container) == 0)
+    }
 }
