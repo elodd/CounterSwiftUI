@@ -43,4 +43,18 @@ extension CounterModel {
             CounterModel(name: String(format: "\(counterTitle)2"), count: 2)
         ]
     }
+
+    /// Returns the lowest-numbered default name not already taken.
+    static func nextName(existing names: [String]) -> String {
+        let counterTitle = String(localized: "counterTitle")
+        let taken = Set(names)
+        let index = (0...).first { !taken.contains("\(counterTitle)\($0)") }!
+        return "\(counterTitle)\(index)"
+    }
+
+    static func delete(at offsets: IndexSet, from counters: [CounterModel], in context: ModelContext) {
+        for index in offsets {
+            context.delete(counters[index])
+        }
+    }
 }
