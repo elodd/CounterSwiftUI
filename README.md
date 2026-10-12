@@ -26,8 +26,8 @@ A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftDat
 
 ## How it behaves
 
-- **First launch:** three example counters are created — `Counter0` (0), `Counter1` (1), `Counter2` (2). This happens only once (tracked with `@AppStorage("prefilledExamples")`), so deleted examples do not come back.
-- **Add:** tapping **+** creates `Counter<N>` (N = current number of counters) with count 0 and opens its detail screen.
+- **First launch:** three example counters are created — `Counter0` (0), `Counter1` (1), `Counter2` (2). This happens only once (tracked with the `prefilledExamples` key in `UserDefaults`), so deleted examples do not come back.
+- **Add:** tapping **+** creates `Counter<N>` (N = the lowest number not already used, so a deleted name is reused) with count 0 and opens its detail screen.
 - **Open:** tapping a row opens the counter's detail screen.
 - **Increment / Decrement:** changes the count by ±1, with a light haptic tap. Counts can go below zero.
 - **Save:** every count change updates *Last updated* to the current time and saves to SwiftData. Counters persist between launches.
@@ -38,16 +38,20 @@ A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftDat
 ```
 Sources/
 ├── CounterSwiftUIApp.swift                 App entry, attaches the model container
-├── Models/CounterModel.swift               @Model: id, name, count, date (+ example defaults)
-├── ModelContainers/CounterContainer.swift  Creates the SwiftData container, seeds examples once
-├── ViewModels/CounterViewModel.swift       @Observable: increment/decrement, formatted strings
+├── Models/CounterModel.swift               @Model: id, name, count, date; example defaults, next name, delete
+├── ModelContainers/CounterContainer.swift  Creates the SwiftData container, seeds examples once, UI-test launch mode
+├── ViewModels/CounterViewModel.swift       @Observable: increment/decrement, save, formatted strings
 ├── Views/
 │   ├── ContentView.swift                   List, empty state, add/delete
 │   ├── CounterRowView.swift                List row
 │   └── CounterDetailView.swift             Detail screen, saves on change
-└── Resources/Localizable.xcstrings         UI strings (English)
-Tests/unitTests.swift                       Swift Testing: model, view model, SwiftData
-project.yml                                 XcodeGen spec
+├── Resources/Localizable.xcstrings         UI strings (English)
+├── Assets.xcassets                         App icon, accent colour
+└── Preview Content/                        Assets for SwiftUI previews only
+Tests/unitTests.swift                       Swift Testing: model, view model, SwiftData, container
+UITests/uiTests.swift                       XCTest UI tests: list, add, delete, detail screen
+project.yml                                 XcodeGen spec: app, Tests and UITests targets
+.github/workflows/tests.yml                 CI: unit and UI tests on an iPhone simulator
 ```
 
 ## Requirements
@@ -66,10 +70,38 @@ xcodegen generate
 open CounterSwiftUI.xcodeproj
 ```
 
-Select the **CounterSwiftUI** scheme and run (⌘R). Run the tests with ⌘U.
+Select the **CounterSwiftUI** scheme and run (⌘R). Run the tests with ⌘U; the scheme runs both test targets.
 
-The tests (Swift Testing) cover the model, the view model (increment/decrement, formatted strings) and SwiftData insert/save/delete using an in-memory store.
+From the command line:
+
+```sh
+xcodebuild test -project CounterSwiftUI.xcodeproj -scheme CounterSwiftUI \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
+```
+
+### Unit tests (`Tests`)
+
+Swift Testing. Covers the model (defaults, naming of new counters), the view model (increment/decrement, formatted strings, save), SwiftData insert/save/delete using an in-memory store, and the container's one-time example seeding.
+
+### UI tests (`UITests`)
+
+XCTest with `XCUIApplication` — Swift Testing is not available in UI-test targets. Covers:
+
+- the example counters on launch, and the empty-state message
+- adding a counter (from a populated and an empty list)
+- swipe-to-delete
+- increment/decrement on the detail screen, including below zero
+- the count surviving navigation back to the list
+
+The tests launch the app with these arguments, so they never touch the real store:
+
+| Argument | Effect |
+|---|---|
+| `-uiTesting` | Fresh in-memory store with the three example counters |
+| `-uiTestingEmpty` | Together with `-uiTesting`: start with no counters |
+
+Elements are found by accessibility identifier (`addCounterButton`, `counterRow`, `countDisplay`, `incrementButton`, `decrementButton`, `emptyViewMessage`), not by localized text. The app is launched in English because the swipe-to-delete test taps the system **Delete** button.
 
 ## CI
 
-The **Tests** workflow (`.github/workflows/tests.yml`) builds and runs the unit tests on an iPhone simulator on every push to `main` and on pull requests.
+The **Tests** workflow (`.github/workflows/tests.yml`) builds and runs the unit and UI tests on an iPhone simulator on every push to `main` and on pull requests.
