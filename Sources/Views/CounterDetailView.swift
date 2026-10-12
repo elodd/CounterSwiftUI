@@ -100,8 +100,7 @@ struct CounterDetailView: View {
 
     func saveState() {
         do {
-            self.viewModel.updateDate()
-            try self.modelContext.save()
+            try self.viewModel.save(in: self.modelContext)
         } catch {
             print("Error saving counter: \(error)")
         }
