@@ -71,9 +71,8 @@ public struct ContentView: View {
     }
 
     func addCounter() {
-        let counterTitle = String(localized: "counterTitle")
         let newCounter = CounterModel(
-            name: String(format: "\(counterTitle)\(self.counterModels.count)")
+            name: CounterModel.nextName(existing: self.counterModels.map(\.name))
         )
         self.modelContext.insert(newCounter)
         self.path.append(newCounter)
@@ -81,10 +80,7 @@ public struct ContentView: View {
     }
 
     func deleteCounter(_ indexSet: IndexSet) {
-        for index in indexSet {
-            let counter = self.counterModels[index]
-            self.modelContext.delete(counter)
-        }
+        CounterModel.delete(at: indexSet, from: self.counterModels, in: self.modelContext)
     }
 }
 
