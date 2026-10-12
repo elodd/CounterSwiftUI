@@ -54,6 +54,28 @@ struct CounterModelTests {
         #expect(model.description.contains("name: Described"))
         #expect(model.description.contains("count: 7"))
     }
+
+    @Test func nextNameWhenEmpty() {
+        let counterTitle = String(localized: "counterTitle")
+        #expect(CounterModel.nextName(existing: []) == "\(counterTitle)0")
+    }
+
+    @Test func nextNameAfterDefaults() {
+        let counterTitle = String(localized: "counterTitle")
+        let names = CounterModel.defaults.map(\.name)
+        #expect(CounterModel.nextName(existing: names) == "\(counterTitle)3")
+    }
+
+    @Test func nextNameFillsGap() {
+        let counterTitle = String(localized: "counterTitle")
+        let names = ["\(counterTitle)0", "\(counterTitle)2"]
+        #expect(CounterModel.nextName(existing: names) == "\(counterTitle)1")
+    }
+
+    @Test func nextNameIgnoresCustomNames() {
+        let counterTitle = String(localized: "counterTitle")
+        #expect(CounterModel.nextName(existing: ["Groceries", "Laps"]) == "\(counterTitle)0")
+    }
 }
 
 // MARK: - CounterViewModel
@@ -105,7 +127,7 @@ struct CounterViewModelTests {
         #expect(makeViewModel().nameString() == "Name: Test Counter")
     }
 
-    @Test(arguments: [0, 5, -3, 1_000])
+    @Test(arguments: [0, 5, -3, 1_000, Int.max, Int.min])
     func countString(count: Int) {
         #expect(makeViewModel(count: count).countString() == "Count: \(count)")
     }
@@ -170,5 +192,87 @@ struct CounterPersistenceTests {
         try context.save()
 
         #expect(try fetchAll().map(\.name) == ["A"])
+    }
+
+    @Test func deleteAtOffsets() throws {
+        ["A", "B", "C", "D"].forEach { context.insert(CounterModel(name: $0)) }
+        try context.save()
+
+        CounterModel.delete(at: IndexSet([1, 3]), from: try fetchAll(), in: context)
+        try context.save()
+
+        #expect(try fetchAll().map(\.name) == ["A", "C"])
+    }
+
+    @Test func deleteAtEmptyOffsetsIsNoOp() throws {
+        CounterModel.defaults.forEach { context.insert($0) }
+        try context.save()
+
+        CounterModel.delete(at: IndexSet(), from: try fetchAll(), in: context)
+        try context.save()
+
+        #expect(try fetchAll().count == 3)
+    }
+
+    @Test func saveUpdatesDateAndPersists() throws {
+        let model = CounterModel(name: "Saved", date: Date(timeIntervalSince1970: 0))
+        context.insert(model)
+        let viewModel = CounterViewModel(counterModel: model)
+        let before = Date()
+
+        viewModel.increment()
+        try viewModel.save(in: context)
+
+        let fetched = try #require(try fetchAll().first { $0.id == model.id })
+        #expect(fetched.count == 1)
+        #expect(fetched.date >= before)
+        #expect(!context.hasChanges)
+    }
+
+    @Test func renameIsPersisted() throws {
+        let model = CounterModel(name: "Before")
+        context.insert(model)
+        try context.save()
+
+        model.name = "After"
+        try context.save()
+
+        #expect(try fetchAll().map(\.name) == ["After"])
+    }
+}
+
+// MARK: - CounterContainer
+
+@Suite("CounterContainer")
+@MainActor
+struct CounterContainerTests {
+
+    private let suiteName = "CounterContainerTests.\(UUID().uuidString)"
+    private let userDefaults: UserDefaults
+
+    init() throws {
+        userDefaults = try #require(UserDefaults(suiteName: suiteName))
+    }
+
+    private func counterCount(in container: ModelContainer) throws -> Int {
+        try container.mainContext.fetchCount(FetchDescriptor<CounterModel>())
+    }
+
+    @Test func firstLaunchInsertsExamples() throws {
+        defer { userDefaults.removePersistentDomain(forName: suiteName) }
+
+        let container = CounterContainer.createContainer(inMemory: true, userDefaults: userDefaults)
+
+        #expect(try counterCount(in: container) == 3)
+        #expect(userDefaults.bool(forKey: CounterContainer.prefilledExamplesKey))
+    }
+
+    @Test func laterLaunchSkipsExamples() throws {
+        defer { userDefaults.removePersistentDomain(forName: suiteName) }
+        userDefaults.set(true, forKey: CounterContainer.prefilledExamplesKey)
+
+        let container = CounterContainer.createContainer(inMemory: true, userDefaults: userDefaults)
+
+        #expect(try counterCount(in: container) == 0)
     }
 }
