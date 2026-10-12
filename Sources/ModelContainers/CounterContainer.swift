@@ -10,6 +10,22 @@ import SwiftData
 
 actor CounterContainer {
     static let prefilledExamplesKey = "prefilledExamples"
+    static let uiTestingArgument = "-uiTesting"
+    static let uiTestingEmptyArgument = "-uiTestingEmpty"
+    static let uiTestingSuiteName = "uiTesting"
+
+    /// Uses a fresh in-memory store when launched by UI tests, prefilled with the
+    /// examples unless `-uiTestingEmpty` is also passed.
+    @MainActor
+    static func createContainer(arguments: [String]) -> ModelContainer {
+        guard arguments.contains(uiTestingArgument),
+              let userDefaults = UserDefaults(suiteName: uiTestingSuiteName) else {
+            return createContainer()
+        }
+        userDefaults.removePersistentDomain(forName: uiTestingSuiteName)
+        userDefaults.set(arguments.contains(uiTestingEmptyArgument), forKey: prefilledExamplesKey)
+        return createContainer(inMemory: true, userDefaults: userDefaults)
+    }
 
     @MainActor
     static public func createContainer(

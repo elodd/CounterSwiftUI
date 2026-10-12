@@ -58,17 +58,34 @@ targets:
         SWIFT_APPROACHABLE_CONCURRENCY: YES
         SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY: YES
 
+  UITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - UITests
+    dependencies:
+      - target: CounterSwiftUI
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.eloddobos.CounterSwiftUI.UITests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: CounterSwiftUI
+        STRING_CATALOG_GENERATE_SYMBOLS: NO
+        SWIFT_EMIT_LOC_STRINGS: NO
+
 schemes:
   CounterSwiftUI:
     build:
       targets:
         CounterSwiftUI: all
         Tests: [test]
+        UITests: [test]
     run:
       config: Debug
     test:
       config: Debug
       targets:
         - Tests
+        - UITests
     archive:
       config: Release

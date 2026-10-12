@@ -20,6 +20,7 @@ struct CounterRowView: View {
                 .font(.system(size: 20))
                 .multilineTextAlignment(.leading)
         })
+        .accessibilityIdentifier("counterRow")
     }
 }
 

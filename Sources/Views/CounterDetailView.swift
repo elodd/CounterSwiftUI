@@ -50,6 +50,7 @@ struct CounterDetailView: View {
                 in: RoundedRectangle(cornerRadius: 28, style: .continuous)
             )
             .accessibilityLabel(self.viewModel.countString())
+            .accessibilityIdentifier("countDisplay")
     }
 
     private var controls: some View {
@@ -57,6 +58,7 @@ struct CounterDetailView: View {
             self.stepButton(
                 systemImage: "minus",
                 label: .decrementButtonTitle,
+                identifier: "decrementButton",
                 tint: .secondary
             ) {
                 self.viewModel.decrement()
@@ -64,6 +66,7 @@ struct CounterDetailView: View {
             self.stepButton(
                 systemImage: "plus",
                 label: .incrementButtonTitle,
+                identifier: "incrementButton",
                 tint: .accentColor
             ) {
                 self.viewModel.increment()
@@ -80,6 +83,7 @@ struct CounterDetailView: View {
     private func stepButton(
         systemImage: String,
         label: LocalizedStringResource,
+        identifier: String,
         tint: Color,
         action: @escaping () -> Void
     ) -> some View {
@@ -94,6 +98,7 @@ struct CounterDetailView: View {
         .buttonBorderShape(.circle)
         .tint(tint)
         .accessibilityLabel(Text(label))
+        .accessibilityIdentifier(identifier)
     }
 
     // MARK: - Persistence

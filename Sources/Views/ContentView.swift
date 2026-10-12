@@ -27,6 +27,7 @@ public struct ContentView: View {
                     Text(.emptyViewMessage)
                         .font(.headline)
                         .padding()
+                        .accessibilityIdentifier("emptyViewMessage")
                     Spacer()
                     Spacer()
                 } else {
@@ -49,6 +50,7 @@ public struct ContentView: View {
                         systemImage: "plus",
                         action: self.addCounter
                     )
+                    .accessibilityIdentifier("addCounterButton")
                 }
                 ToolbarItemGroup(placement: .bottomBar) {
                    Text("A.B.C (build: xyz)")
