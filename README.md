@@ -10,7 +10,7 @@ A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftDat
 - Navigation title **Counters**, with a **+** (Add counter) button at the top right.
 - Each row shows three lines:
   ```
-  Name: Counter0
+  Name: Counter 0
   Count: 0
   Last updated: 2026-10-03 09:41
   ```
@@ -26,7 +26,7 @@ A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftDat
 
 ## How it behaves
 
-- **First launch:** three example counters are created — `Counter0` (0), `Counter1` (1), `Counter2` (2). This happens only once (tracked with the `prefilledExamples` key in `UserDefaults`), so deleted examples do not come back.
+- **First launch:** three example counters are created — `Counter 0` (0), `Counter 1` (1), `Counter 2` (2). This happens only once (tracked with the `prefilledExamples` key in `UserDefaults`), so deleted examples do not come back.
 - **Add:** tapping **+** creates `Counter<N>` (N = the lowest number not already used, so a deleted name is reused) with count 0 and opens its detail screen.
 - **Open:** tapping a row opens the counter's detail screen.
 - **Increment / Decrement:** changes the count by ±1, with a light haptic tap. Counts can go below zero.

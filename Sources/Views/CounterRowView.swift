@@ -29,7 +29,7 @@ struct CounterRowView: View {
     let counterTitle = String(localized: "counterTitle")
     CounterRowView(
         counterViewModel: CounterViewModel(counterModel: CounterModel(
-            name: "\(counterTitle)0")
+            name: "\(counterTitle) 0")
         )
     )
 }

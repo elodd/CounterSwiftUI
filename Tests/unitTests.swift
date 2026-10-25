@@ -43,7 +43,7 @@ struct CounterModelTests {
         let counterTitle = String(localized: "counterTitle")
         let defaults = CounterModel.defaults
 
-        #expect(defaults.map(\.name) == ["\(counterTitle)0", "\(counterTitle)1", "\(counterTitle)2"])
+        #expect(defaults.map(\.name) == ["\(counterTitle) 0", "\(counterTitle) 1", "\(counterTitle) 2"])
         #expect(defaults.map(\.count) == [0, 1, 2])
     }
 
@@ -57,24 +57,24 @@ struct CounterModelTests {
 
     @Test func nextNameWhenEmpty() {
         let counterTitle = String(localized: "counterTitle")
-        #expect(CounterModel.nextName(existing: []) == "\(counterTitle)0")
+        #expect(CounterModel.nextName(existing: []) == "\(counterTitle) 0")
     }
 
     @Test func nextNameAfterDefaults() {
         let counterTitle = String(localized: "counterTitle")
         let names = CounterModel.defaults.map(\.name)
-        #expect(CounterModel.nextName(existing: names) == "\(counterTitle)3")
+        #expect(CounterModel.nextName(existing: names) == "\(counterTitle) 3")
     }
 
     @Test func nextNameFillsGap() {
         let counterTitle = String(localized: "counterTitle")
-        let names = ["\(counterTitle)0", "\(counterTitle)2"]
-        #expect(CounterModel.nextName(existing: names) == "\(counterTitle)1")
+        let names = ["\(counterTitle) 0", "\(counterTitle) 2"]
+        #expect(CounterModel.nextName(existing: names) == "\(counterTitle) 1")
     }
 
     @Test func nextNameIgnoresCustomNames() {
         let counterTitle = String(localized: "counterTitle")
-        #expect(CounterModel.nextName(existing: ["Groceries", "Laps"]) == "\(counterTitle)0")
+        #expect(CounterModel.nextName(existing: ["Groceries", "Laps"]) == "\(counterTitle) 0")
     }
 }
 

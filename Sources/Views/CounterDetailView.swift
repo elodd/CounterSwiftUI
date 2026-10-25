@@ -117,7 +117,7 @@ struct CounterDetailView: View {
     NavigationStack {
         CounterDetailView(
             viewModel: CounterViewModel(counterModel: CounterModel(
-                name: "\(counterTitle)0")
+                name: "\(counterTitle) 0")
             )
         )
     }
@@ -129,7 +129,7 @@ import Playgrounds
 #Playground {
     let counterTitle = String(localized: "counterTitle")
     let counterModel = CounterModel(
-        name: String(format: "\(counterTitle)0")
+        name: String(format: "\(counterTitle) 0")
     )
     print(counterModel.description)
 }
