@@ -14,11 +14,12 @@ struct CounterRowView: View {
         NavigationLink(destination: {
             CounterDetailView(viewModel: self.counterViewModel)
         }, label: {
-            Text("\(counterViewModel.nameString())\n" +
-                 "\(counterViewModel.countString())\n" +
-                 "\(counterViewModel.dateString())")
-                .font(.system(size: 20))
-                .multilineTextAlignment(.leading)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(counterViewModel.nameString())
+                Text(counterViewModel.countString())
+                Text(counterViewModel.dateString())
+            }
+            .font(.system(size: 20))
         })
         .accessibilityIdentifier("counterRow")
     }
