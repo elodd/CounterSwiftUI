@@ -13,7 +13,12 @@ public struct ContentView: View {
     @Query(sort: \CounterModel.name) var counterModels: [CounterModel]
     @State private var path = NavigationPath()
 
-    @State private var showCounter: Bool = false
+    private var versionString: String {
+        let info = Bundle.main.infoDictionary
+        let version = info?["CFBundleShortVersionString"] as? String ?? "-"
+        let build = info?["CFBundleVersion"] as? String ?? "-"
+        return "\(version) (build: \(build))"
+    }
 
     public var body: some View {
         NavigationStack(path: $path) {
@@ -33,11 +38,9 @@ public struct ContentView: View {
                 } else {
                     List {
                         ForEach(counterModels) { counterModel in
-                            VStack {
-                                CounterRowView(counterViewModel: CounterViewModel(
-                                    counterModel: counterModel
-                                ))
-                            }
+                            CounterRowView(counterViewModel: CounterViewModel(
+                                counterModel: counterModel
+                            ))
                         }
                         .onDelete(perform: self.deleteCounter)
                     }
@@ -53,21 +56,18 @@ public struct ContentView: View {
                     .accessibilityIdentifier("addCounterButton")
                 }
                 ToolbarItemGroup(placement: .bottomBar) {
-                   Text("A.B.C (build: xyz)")
-                       .font(.footnote)
-                       .foregroundColor(.secondary)
-                       .frame(maxWidth: .infinity)
-                       .textSelection(.enabled)
-                   }
+                    Text(versionString)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity)
+                        .textSelection(.enabled)
+                }
             }
             .navigationTitle(.navigationTitle)
-            .navigationDestination(isPresented: $showCounter) {
-                if self.counterModels.isEmpty == false, let counterModel: CounterModel = self.counterModels.last {
-                    CounterDetailView(
-                        viewModel: CounterViewModel(
-                            counterModel: counterModel)
-                    )
-                }
+            .navigationDestination(for: CounterModel.self) { counterModel in
+                CounterDetailView(
+                    viewModel: CounterViewModel(counterModel: counterModel)
+                )
             }
         }
     }
@@ -78,7 +78,6 @@ public struct ContentView: View {
         )
         self.modelContext.insert(newCounter)
         self.path.append(newCounter)
-        self.showCounter = true
     }
 
     func deleteCounter(_ indexSet: IndexSet) {
