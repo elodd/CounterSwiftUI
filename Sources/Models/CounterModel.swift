@@ -37,19 +37,15 @@ extension CounterModel: CustomStringConvertible {
 extension CounterModel {
     static var defaults: [CounterModel] {
         let counterTitle = String(localized: "counterTitle")
-        return [
-            CounterModel(name: String(format: "\(counterTitle)0"), count: 0),
-            CounterModel(name: String(format: "\(counterTitle)1"), count: 1),
-            CounterModel(name: String(format: "\(counterTitle)2"), count: 2)
-        ]
+        return (0..<3).map { CounterModel(name: "\(counterTitle) \($0)", count: $0) }
     }
 
     /// Returns the lowest-numbered default name not already taken.
     static func nextName(existing names: [String]) -> String {
         let counterTitle = String(localized: "counterTitle")
         let taken = Set(names)
-        let index = (0...).first { !taken.contains("\(counterTitle)\($0)") }!
-        return "\(counterTitle)\(index)"
+        let index = (0...).first { !taken.contains("\(counterTitle) \($0)") }!
+        return "\(counterTitle) \(index)"
     }
 
     static func delete(at offsets: IndexSet, from counters: [CounterModel], in context: ModelContext) {
