@@ -61,6 +61,7 @@ public struct ContentView: View {
                         .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity)
                         .textSelection(.enabled)
+                        .accessibilityIdentifier("versionLabel")
                 }
             }
             .navigationTitle(.navigationTitle)
