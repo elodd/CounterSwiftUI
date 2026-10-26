@@ -55,13 +55,16 @@ public struct ContentView: View {
                     )
                     .accessibilityIdentifier("addCounterButton")
                 }
+                // Toolbar items size to their content, so spacers centre the label.
                 ToolbarItemGroup(placement: .bottomBar) {
+                    Spacer()
                     Text(versionString)
-                        .font(.footnote)
+                        .font(.footnote.bold())
                         .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity)
+                        .frame(width: 180)
                         .textSelection(.enabled)
                         .accessibilityIdentifier("versionLabel")
+                    Spacer()
                 }
             }
             .navigationTitle(.navigationTitle)
