@@ -13,6 +13,13 @@ private let uiTestingEmptyArgument = "-uiTestingEmpty"
 // Mirrors the accessibility identifier prefix in CounterRowView.
 private let counterRowPrefix = "counterRow."
 
+private extension XCUIElement {
+    /// Checks `exists` first; `waitForExistence` alone takes about a second even when the element is already there.
+    func appears(timeout: TimeInterval = 5) -> Bool {
+        exists || waitForExistence(timeout: timeout)
+    }
+}
+
 @MainActor
 final class CounterUITests: XCTestCase {
 
@@ -42,7 +49,7 @@ final class CounterUITests: XCTestCase {
 
     private func assertCount(_ count: Int, in app: XCUIApplication, file: StaticString = #filePath, line: UInt = #line) {
         let display = countDisplay(in: app)
-        XCTAssertTrue(display.waitForExistence(timeout: 5), file: file, line: line)
+        XCTAssertTrue(display.appears(), file: file, line: line)
         XCTAssertTrue(display.label.hasSuffix(" \(count)"), "label was \"\(display.label)\"", file: file, line: line)
     }
 
@@ -59,13 +66,13 @@ final class CounterUITests: XCTestCase {
 
     func testLaunchShowsExampleCounters() {
         let app = launch()
-        XCTAssertTrue(rows(in: app).firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(rows(in: app).firstMatch.appears())
         XCTAssertEqual(rows(in: app).count, 3)
     }
 
     func testEmptyStoreShowsEmptyMessage() {
         let app = launch(empty: true)
-        XCTAssertTrue(app.staticTexts["emptyViewMessage"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["emptyViewMessage"].appears())
         XCTAssertEqual(rows(in: app).count, 0)
     }
 
@@ -75,7 +82,7 @@ final class CounterUITests: XCTestCase {
         assertCount(0, in: app)
 
         goBack(in: app)
-        XCTAssertTrue(rows(in: app).firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(rows(in: app).firstMatch.appears())
         XCTAssertEqual(rows(in: app).count, 4)
     }
 
@@ -85,7 +92,7 @@ final class CounterUITests: XCTestCase {
         assertCount(0, in: app)
 
         goBack(in: app)
-        XCTAssertTrue(rows(in: app).firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(rows(in: app).firstMatch.appears())
         XCTAssertEqual(rows(in: app).count, 1)
         XCTAssertFalse(app.staticTexts["emptyViewMessage"].exists)
     }
@@ -93,7 +100,7 @@ final class CounterUITests: XCTestCase {
     func testSwipeToDelete() {
         let app = launch()
         let firstRow = rows(in: app).firstMatch
-        XCTAssertTrue(firstRow.waitForExistence(timeout: 5))
+        XCTAssertTrue(firstRow.appears())
 
         firstRow.swipeLeft()
         app.buttons["Delete"].tap()
@@ -131,18 +138,18 @@ final class CounterUITests: XCTestCase {
     func testDeepLinkOpensCounter() {
         let app = launch()
         let row = rows(in: app).element(boundBy: 1)
-        XCTAssertTrue(row.waitForExistence(timeout: 5))
+        XCTAssertTrue(row.appears())
         let id = String(row.identifier.dropFirst(counterRowPrefix.count))
 
         openDeepLink(id: id)
 
-        XCTAssertTrue(app.navigationBars["Counter 1"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Counter 1"].appears())
         assertCount(1, in: app)
     }
 
     func testDeepLinkUnknownIdStaysOnList() {
         let app = launch()
-        XCTAssertTrue(rows(in: app).firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(rows(in: app).firstMatch.appears())
 
         openDeepLink(id: "missing")
 

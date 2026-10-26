@@ -46,9 +46,12 @@ jobs:
             -scheme CounterSwiftUI \
             -destination "id=${{ steps.sim.outputs.udid }}" \
             -resultBundlePath TestResults.xcresult \
+            -parallel-testing-enabled YES \
+            -parallel-testing-worker-count 2 \
             -retry-tests-on-failure \
             -test-iterations 2 \
             CODE_SIGNING_ALLOWED=NO \
+            COMPILER_INDEX_STORE_ENABLE=NO \
             | xcbeautify --renderer github-actions
 
       - name: Upload test results
