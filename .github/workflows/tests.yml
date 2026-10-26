@@ -46,6 +46,8 @@ jobs:
             -scheme CounterSwiftUI \
             -destination "id=${{ steps.sim.outputs.udid }}" \
             -resultBundlePath TestResults.xcresult \
+            -retry-tests-on-failure \
+            -test-iterations 2 \
             CODE_SIGNING_ALLOWED=NO \
             | xcbeautify --renderer github-actions
 
