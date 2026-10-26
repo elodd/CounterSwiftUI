@@ -8,6 +8,7 @@
 import SwiftData
 import SwiftUI
 
+@MainActor
 @Observable
 final class CounterViewModel {
     var counterModel: CounterModel
@@ -33,11 +34,11 @@ final class CounterViewModel {
         return "\(String(localized: "dateLabelTitle")) \(dateFormat)"
     }
 
-    func increment() {
+    func increment() async {
         self.counterModel.count += 1
     }
 
-    func decrement() {
+    func decrement() async {
         self.counterModel.count -= 1
     }
 

@@ -81,30 +81,31 @@ struct CounterModelTests {
 // MARK: - CounterViewModel
 
 @Suite("CounterViewModel")
+@MainActor
 struct CounterViewModelTests {
 
     private func makeViewModel(name: String = "Test Counter", count: Int = 0) -> CounterViewModel {
         CounterViewModel(counterModel: CounterModel(name: name, count: count))
     }
 
-    @Test func incrementAndDecrement() {
+    @Test func incrementAndDecrement() async {
         let viewModel = makeViewModel()
-        (0..<4).forEach { _ in viewModel.increment() }
+        for _ in 0..<4 { await viewModel.increment() }
         #expect(viewModel.counterModel.count == 4)
 
-        viewModel.decrement()
+        await viewModel.decrement()
         #expect(viewModel.counterModel.count == 3)
     }
 
-    @Test func decrementBelowZero() {
+    @Test func decrementBelowZero() async {
         let viewModel = makeViewModel()
-        viewModel.decrement()
+        await viewModel.decrement()
         #expect(viewModel.counterModel.count == -1)
     }
 
-    @Test func changesWriteThroughToModel() {
+    @Test func changesWriteThroughToModel() async {
         let model = CounterModel(name: "Shared")
-        CounterViewModel(counterModel: model).increment()
+        await CounterViewModel(counterModel: model).increment()
         #expect(model.count == 1)
     }
 
@@ -168,13 +169,13 @@ struct CounterPersistenceTests {
         #expect(counters.map(\.count) == [0, 1, 2])
     }
 
-    @Test func incrementIsPersisted() throws {
+    @Test func incrementIsPersisted() async throws {
         let model = CounterModel(name: "Persisted")
         context.insert(model)
         let viewModel = CounterViewModel(counterModel: model)
 
-        viewModel.increment()
-        viewModel.increment()
+        await viewModel.increment()
+        await viewModel.increment()
         try context.save()
 
         let fetched = try #require(try fetchAll().first { $0.id == model.id })
@@ -214,13 +215,13 @@ struct CounterPersistenceTests {
         #expect(try fetchAll().count == 3)
     }
 
-    @Test func saveUpdatesDateAndPersists() throws {
+    @Test func saveUpdatesDateAndPersists() async throws {
         let model = CounterModel(name: "Saved", date: Date(timeIntervalSince1970: 0))
         context.insert(model)
         let viewModel = CounterViewModel(counterModel: model)
         let before = Date()
 
-        viewModel.increment()
+        await viewModel.increment()
         try viewModel.save(in: context)
 
         let fetched = try #require(try fetchAll().first { $0.id == model.id })

@@ -40,6 +40,7 @@ struct CounterDetailView: View {
             .font(.system(size: 120, weight: .bold, design: .rounded))
             .monospacedDigit()
             .contentTransition(.numericText(value: Double(self.count)))
+            .animation(.snappy, value: self.count)
             .foregroundStyle(self.count < 0 ? Color.red : Color.primary)
             .lineLimit(1)
             .minimumScaleFactor(0.3)
@@ -61,7 +62,7 @@ struct CounterDetailView: View {
                 identifier: "decrementButton",
                 tint: .secondary
             ) {
-                self.viewModel.decrement()
+                await self.viewModel.decrement()
             }
             self.stepButton(
                 systemImage: "plus",
@@ -69,7 +70,7 @@ struct CounterDetailView: View {
                 identifier: "incrementButton",
                 tint: .accentColor
             ) {
-                self.viewModel.increment()
+                await self.viewModel.increment()
             }
         }
     }
@@ -85,10 +86,10 @@ struct CounterDetailView: View {
         label: LocalizedStringResource,
         identifier: String,
         tint: Color,
-        action: @escaping () -> Void
+        action: @escaping @MainActor () async -> Void
     ) -> some View {
         Button {
-            withAnimation(.snappy) { action() }
+            Task { await action() }
         } label: {
             Image(systemName: systemImage)
                 .font(.system(size: 32, weight: .semibold))
