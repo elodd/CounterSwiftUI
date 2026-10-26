@@ -21,7 +21,7 @@ struct CounterRowView: View {
             }
             .font(.system(size: 20))
         })
-        .accessibilityIdentifier("counterRow")
+        .accessibilityIdentifier("counterRow.\(counterViewModel.counterModel.id)")
     }
 }
 

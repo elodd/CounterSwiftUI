@@ -27,6 +27,15 @@ targets:
     platform: iOS
     sources:
       - Sources
+    info:
+      path: Sources/Info.plist
+      properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleURLTypes:
+          - CFBundleURLName: com.eloddobos.CounterSwiftUI
+            CFBundleURLSchemes:
+              - counterswiftui
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.eloddobos.CounterSwiftUI

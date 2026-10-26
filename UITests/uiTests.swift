@@ -10,6 +10,8 @@ import XCTest
 // Mirrors CounterContainer.uiTestingArgument / uiTestingEmptyArgument.
 private let uiTestingArgument = "-uiTesting"
 private let uiTestingEmptyArgument = "-uiTestingEmpty"
+// Mirrors the accessibility identifier prefix in CounterRowView.
+private let counterRowPrefix = "counterRow."
 
 @MainActor
 final class CounterUITests: XCTestCase {
@@ -31,7 +33,7 @@ final class CounterUITests: XCTestCase {
     }
 
     private func rows(in app: XCUIApplication) -> XCUIElementQuery {
-        app.buttons.matching(identifier: "counterRow")
+        app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", counterRowPrefix))
     }
 
     private func countDisplay(in app: XCUIApplication) -> XCUIElement {
@@ -42,6 +44,11 @@ final class CounterUITests: XCTestCase {
         let display = countDisplay(in: app)
         XCTAssertTrue(display.waitForExistence(timeout: 5), file: file, line: line)
         XCTAssertTrue(display.label.hasSuffix(" \(count)"), "label was \"\(display.label)\"", file: file, line: line)
+    }
+
+    /// Opens the URL in the running app; `XCUIApplication.open(_:)` would relaunch it.
+    private func openDeepLink(id: String) {
+        XCUIDevice.shared.system.open(URL(string: "counterswiftui://counter/\(id)")!)
     }
 
     private func goBack(in app: XCUIApplication) {
@@ -117,6 +124,30 @@ final class CounterUITests: XCTestCase {
 
         app.buttons["decrementButton"].tap()
         assertCount(-1, in: app)
+    }
+
+    // MARK: - Deep link
+
+    func testDeepLinkOpensCounter() {
+        let app = launch()
+        let row = rows(in: app).element(boundBy: 1)
+        XCTAssertTrue(row.waitForExistence(timeout: 5))
+        let id = String(row.identifier.dropFirst(counterRowPrefix.count))
+
+        openDeepLink(id: id)
+
+        XCTAssertTrue(app.navigationBars["Counter 1"].waitForExistence(timeout: 5))
+        assertCount(1, in: app)
+    }
+
+    func testDeepLinkUnknownIdStaysOnList() {
+        let app = launch()
+        XCTAssertTrue(rows(in: app).firstMatch.waitForExistence(timeout: 5))
+
+        openDeepLink(id: "missing")
+
+        XCTAssertFalse(countDisplay(in: app).waitForExistence(timeout: 2))
+        XCTAssertEqual(rows(in: app).count, 3)
     }
 
     func testCountSurvivesNavigatingBack() {

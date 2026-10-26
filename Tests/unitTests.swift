@@ -34,6 +34,22 @@ struct CounterModelTests {
         #expect(model.date == date)
     }
 
+    @Test func deepLinkId() throws {
+        let model = CounterModel(name: "Linked")
+        let url = try #require(URL(string: "counterswiftui://counter/\(model.id)"))
+        #expect(CounterModel.id(fromDeepLink: url) == model.id)
+    }
+
+    @Test(arguments: [
+        "https://counter/E621E1F8-C36C-495A-93FC-0C247A3E6E5F",
+        "counterswiftui://other/E621E1F8-C36C-495A-93FC-0C247A3E6E5F",
+        "counterswiftui://counter",
+        "counterswiftui://counter/a/b",
+    ])
+    func deepLinkInvalid(url: String) throws {
+        #expect(CounterModel.id(fromDeepLink: try #require(URL(string: url))) == nil)
+    }
+
     @Test func idsAreUnique() {
         let ids = Set((0..<100).map { _ in CounterModel(name: "x").id })
         #expect(ids.count == 100)

@@ -9,12 +9,14 @@ import SwiftUI
 
 @main
 struct CounterSwiftUIApp: App {
+    private let modelContainer = CounterContainer.createContainer(
+        arguments: ProcessInfo.processInfo.arguments
+    )
+
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(
-            CounterContainer.createContainer(arguments: ProcessInfo.processInfo.arguments)
-        )
+        .modelContainer(self.modelContainer)
     }
 }

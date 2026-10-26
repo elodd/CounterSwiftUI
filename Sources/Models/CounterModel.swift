@@ -19,6 +19,7 @@ class CounterModel: Identifiable {
         self.name = name
         self.count = count
         self.date = date
+        print (id)
     }
 }
 
@@ -35,6 +36,19 @@ extension CounterModel: CustomStringConvertible {
 }
 
 extension CounterModel {
+    static let deepLinkScheme = "counterswiftui"
+    static let deepLinkHost = "counter"
+
+    /// Returns the counter id from a `counterswiftui://counter/<id>` URL.
+    static func id(fromDeepLink url: URL) -> String? {
+        guard url.scheme == deepLinkScheme,
+              url.host() == deepLinkHost,
+              url.pathComponents.count == 2 else {
+            return nil
+        }
+        return url.pathComponents[1]
+    }
+
     static var defaults: [CounterModel] {
         let counterTitle = String(localized: "counterTitle")
         return (0..<3).map { CounterModel(name: "\(counterTitle) \($0)", count: $0) }

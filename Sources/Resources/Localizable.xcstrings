@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "A.B.C (build: xyz)" : {
-
-    },
     "addCounterButtonTitle" : {
       "extractionState" : "manual",
       "localizations" : {

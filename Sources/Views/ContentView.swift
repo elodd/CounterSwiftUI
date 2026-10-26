@@ -70,6 +70,7 @@ public struct ContentView: View {
                 )
             }
         }
+        .onOpenURL(perform: self.openCounter)
     }
 
     func addCounter() {
@@ -78,6 +79,15 @@ public struct ContentView: View {
         )
         self.modelContext.insert(newCounter)
         self.path.append(newCounter)
+    }
+
+    /// Opens the counter whose id is in a deep link; unknown ids are ignored.
+    func openCounter(_ url: URL) {
+        guard let id = CounterModel.id(fromDeepLink: url),
+              let counterModel = self.counterModels.first(where: { $0.id == id }) else {
+            return
+        }
+        self.path = NavigationPath([counterModel])
     }
 
     func deleteCounter(_ indexSet: IndexSet) {
