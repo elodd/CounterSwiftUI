@@ -11,18 +11,37 @@ import SwiftData
 struct CounterDetailView: View {
     @Bindable var viewModel: CounterViewModel
     @Environment(\.modelContext) var modelContext
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     @State private var isShowingQRCode = false
 
     private var count: Int { self.viewModel.counterModel.count }
 
+    /// iPhone landscape: too short to stack everything, so the count sits beside the controls.
+    private var isCompactHeight: Bool { self.verticalSizeClass == .compact }
+
     var body: some View {
-        VStack(spacing: 32) {
-            Spacer()
-            self.countDisplay
-            self.controls
-            Spacer()
-            self.qrCode
-            self.lastUpdated
+        Group {
+            if self.isCompactHeight {
+                VStack(spacing: 16) {
+                    HStack(spacing: 32) {
+                        self.countDisplay
+                        VStack(spacing: 20) {
+                            self.controls
+                            self.qrCode(size: 96)
+                        }
+                    }
+                    self.lastUpdated
+                }
+            } else {
+                VStack(spacing: 32) {
+                    Spacer()
+                    self.countDisplay
+                    self.controls
+                    Spacer()
+                    self.qrCode(size: 120)
+                    self.lastUpdated
+                }
+            }
         }
         .padding(24)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -50,7 +69,7 @@ struct CounterDetailView: View {
             .foregroundStyle(self.count < 0 ? Color.red : Color.primary)
             .lineLimit(1)
             .minimumScaleFactor(0.3)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: self.isCompactHeight ? .infinity : nil)
             .padding(.vertical, 32)
             .background(
                 Color(.secondarySystemGroupedBackground),
@@ -82,12 +101,12 @@ struct CounterDetailView: View {
     }
 
     /// The counter's deep link; tap to enlarge and share.
-    private var qrCode: some View {
+    private func qrCode(size: CGFloat) -> some View {
         Button {
             self.isShowingQRCode = true
         } label: {
             QRCodeImage(counterModel: self.viewModel.counterModel)
-                .frame(width: 120, height: 120)
+                .frame(width: size, height: size)
                 .padding(12)
                 .background(
                     Color(.secondarySystemGroupedBackground),
