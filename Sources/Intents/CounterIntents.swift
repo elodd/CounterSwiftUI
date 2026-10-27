@@ -152,16 +152,9 @@ struct GetCountIntent: AppIntent {
 }
 
 struct CounterShortcuts: AppShortcutsProvider {
+    // No Siri phrases for `OpenCounterIntent`: it needs an unlocked device to open the app.
+    // It stays available as an action in the Shortcuts app.
     static var appShortcuts: [AppShortcut] {
-        AppShortcut(
-            intent: OpenCounterIntent(),
-            phrases: [
-                "Open \(\.$counter) in \(.applicationName)",
-                "Show \(\.$counter) in \(.applicationName)"
-            ],
-            shortTitle: "Open Counter",
-            systemImageName: "number"
-        )
         AppShortcut(
             intent: IncrementCounterIntent(),
             phrases: [

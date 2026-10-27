@@ -41,10 +41,11 @@ A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftDat
 - **Siri, Shortcuts and Spotlight (App Intents):** counters are picked by name; the chosen counter is then tracked by id.
   | Say | Does |
   |---|---|
-  | "Open Counter 2 in CounterSwiftUI" | Opens it through the deep link |
   | "Increment Counter 2 in CounterSwiftUI" | Adds one and saves, without opening the app; Siri replies with the new count |
   | "Decrement Counter 2 in CounterSwiftUI" | Subtracts one and saves, likewise |
   | "What's Counter 2 in CounterSwiftUI" | Siri replies with the count (also returned as a value for Shortcuts) |
+
+  **Open Counter** has no Siri phrase, since opening the app needs an unlocked device. It is still an action in the Shortcuts app, where it opens the counter through the deep link.
 - **Increment / Decrement:** changes the count by ±1, with a light haptic tap. Counts can go below zero.
 - **Save:** every count change updates *Last updated* to the current time and saves to SwiftData. Counters persist between launches.
 - **Delete:** swipe left on a row to delete the counter.
