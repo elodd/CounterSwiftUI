@@ -16,7 +16,8 @@ public struct ContentView: View {
     private var versionString: String {
         let info = Bundle.main.infoDictionary
         let version = info?["CFBundleShortVersionString"] as? String ?? "-"
-        let build = info?["CFBundleVersion"] as? String ?? "-"
+        // Short git commit SHA, stamped into Info.plist at build time (see project.yml).
+        let build = info?["GitCommitSHA"] as? String ?? "-"
         return "\(version) (build: \(build))"
     }
 

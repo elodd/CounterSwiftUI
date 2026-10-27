@@ -27,11 +27,21 @@ targets:
     platform: iOS
     sources:
       - Sources
+    preBuildScripts:
+      # Writes the short git commit SHA to a header that Info.plist preprocessing reads (GitCommitSHA).
+      - name: Git commit header
+        basedOnDependencyAnalysis: false
+        outputFiles:
+          - $(DERIVED_FILE_DIR)/GitCommit.h
+        script: |
+          sha=$(git -C "$SRCROOT" rev-parse --short HEAD 2>/dev/null || echo "-")
+          echo "#define GIT_COMMIT_SHA $sha" > "$DERIVED_FILE_DIR/GitCommit.h"
     info:
       path: Sources/Info.plist
       properties:
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        GitCommitSHA: GIT_COMMIT_SHA
         CFBundleURLTypes:
           - CFBundleURLName: com.eloddobos.CounterSwiftUI
             CFBundleURLSchemes:
@@ -39,6 +49,10 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.eloddobos.CounterSwiftUI
+        INFOPLIST_PREPROCESS: YES
+        INFOPLIST_PREFIX_HEADER: $(DERIVED_FILE_DIR)/GitCommit.h
+        # The git commit header script reads all of .git, which the script sandbox can't allow.
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
         GENERATE_INFOPLIST_FILE: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
