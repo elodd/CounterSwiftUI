@@ -85,10 +85,14 @@ public struct ContentView: View {
         self.path.append(newCounter)
     }
 
-    /// Opens the counter whose id is in a deep link; unknown ids are ignored.
+    /// Opens the counter whose id or name is in a deep link; unknown ones are ignored.
     func openCounter(_ url: URL) {
-        guard let id = CounterModel.id(fromDeepLink: url),
-              let counterModel = self.counterModels.first(where: { $0.id == id }) else {
+        guard let reference = CounterModel.reference(fromDeepLink: url),
+              let counterModel = CounterModel.match(
+                reference,
+                near: CounterModel.date(fromDeepLink: url),
+                in: self.counterModels
+              ) else {
             return
         }
         self.path = NavigationPath([counterModel])

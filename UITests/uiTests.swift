@@ -54,8 +54,12 @@ final class CounterUITests: XCTestCase {
     }
 
     /// Opens the URL in the running app; `XCUIApplication.open(_:)` would relaunch it.
-    private func openDeepLink(id: String) {
-        XCUIDevice.shared.system.open(URL(string: "counterswiftui://counter/\(id)")!)
+    private func openDeepLink(_ reference: String) {
+        var components = URLComponents()
+        components.scheme = "counterswiftui"
+        components.host = "counter"
+        components.path = "/\(reference)"
+        XCUIDevice.shared.system.open(components.url!)
     }
 
     private func goBack(in app: XCUIApplication) {
@@ -141,17 +145,27 @@ final class CounterUITests: XCTestCase {
         XCTAssertTrue(row.appears())
         let id = String(row.identifier.dropFirst(counterRowPrefix.count))
 
-        openDeepLink(id: id)
+        openDeepLink(id)
 
         XCTAssertTrue(app.navigationBars["Counter 1"].appears())
         assertCount(1, in: app)
+    }
+
+    func testDeepLinkByNameOpensCounter() {
+        let app = launch()
+        XCTAssertTrue(rows(in: app).firstMatch.appears())
+
+        openDeepLink("Counter 2")
+
+        XCTAssertTrue(app.navigationBars["Counter 2"].appears())
+        assertCount(2, in: app)
     }
 
     func testDeepLinkUnknownIdStaysOnList() {
         let app = launch()
         XCTAssertTrue(rows(in: app).firstMatch.appears())
 
-        openDeepLink(id: "missing")
+        openDeepLink("missing")
 
         XCTAssertFalse(countDisplay(in: app).waitForExistence(timeout: 2))
         XCTAssertEqual(rows(in: app).count, 3)

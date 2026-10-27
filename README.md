@@ -29,15 +29,23 @@ A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftDat
 - **First launch:** three example counters are created — `Counter 0` (0), `Counter 1` (1), `Counter 2` (2). This happens only once (tracked with the `prefilledExamples` key in `UserDefaults`), so deleted examples do not come back.
 - **Add:** tapping **+** creates `Counter <N>` (N = the lowest number not already used, so a deleted name is reused) with count 0 and opens its detail screen.
 - **Open:** tapping a row opens the counter's detail screen.
-- **Deep link:** `counterswiftui://counter/<id>` opens the counter with that `id` directly; Back returns to the list. An unknown id is ignored. To try it on a simulator:
+- **Deep link:** `counterswiftui://counter/<id or name>` opens that counter directly; Back returns to the list. The id is tried first, then the name. If names repeat, add an approximate `?date=` (`yyyy-MM-dd` or `yyyy-MM-ddTHH:mm`, local time) to pick the counter whose *Last updated* is closest to it; without a date the first in name order opens. Anything unknown is ignored. To try it on a simulator:
   ```sh
   xcrun simctl list devices booted                      # find the simulator's UDID
-  xcrun simctl openurl <UDID> "counterswiftui://counter/<id>"
+  xcrun simctl openurl <UDID> "counterswiftui://counter/Counter%202"                  # by name
+  xcrun simctl openurl <UDID> "counterswiftui://counter/Counter%202?date=2026-10-26"  # by name, closest to that day
+  xcrun simctl openurl <UDID> "counterswiftui://counter/<id>"                         # by id
   ```
   - Run the current build on that simulator first; builds from before the URL scheme was added fail with `LSApplicationWorkspaceErrorDomain` error 115.
   - Use the UDID instead of `booted` when more than one simulator is running, since `booted` picks just one of them.
-  - Ids are per store, so the id must come from the same simulator (e.g. via the row's `counterRow.<id>` accessibility identifier).
-- **Siri, Shortcuts and Spotlight (App Intents):** the *Open Counter* action opens a chosen counter through the same deep link. Say or type "Open Counter 2 in CounterSwiftUI", or use it in the Shortcuts app; counters can be picked by name.
+  - Ids are per store, so an id must come from the same simulator (e.g. via the row's `counterRow.<id>` accessibility identifier).
+- **Siri, Shortcuts and Spotlight (App Intents):** counters are picked by name; the chosen counter is then tracked by id, so saved shortcuts survive renames.
+  | Say | Does |
+  |---|---|
+  | "Open Counter 2 in CounterSwiftUI" | Opens it through the deep link |
+  | "Increment Counter 2 in CounterSwiftUI" | Adds one and saves, without opening the app; Siri replies with the new count |
+  | "Decrement Counter 2 in CounterSwiftUI" | Subtracts one and saves, likewise |
+  | "What's Counter 2 in CounterSwiftUI" | Siri replies with the count (also returned as a value for Shortcuts) |
 - **Increment / Decrement:** changes the count by ±1, with a light haptic tap. Counts can go below zero.
 - **Save:** every count change updates *Last updated* to the current time and saves to SwiftData. Counters persist between launches.
 - **Delete:** swipe left on a row to delete the counter.
@@ -48,7 +56,7 @@ A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftDat
 Sources/
 ├── CounterSwiftUIApp.swift                 App entry, creates the model container once, shares it with App Intents
 ├── Models/CounterModel.swift               @Model: id, name, count, date; example defaults, next name, delete, deep-link parsing
-├── Intents/CounterIntents.swift            App Intents: counter entity and query, Open Counter intent, App Shortcuts phrases
+├── Intents/CounterIntents.swift            App Intents: counter entity and query, open/increment/decrement/get-count intents, Siri phrases
 ├── ModelContainers/CounterContainer.swift  Creates the SwiftData container, seeds examples once, UI-test launch mode
 ├── ViewModels/CounterViewModel.swift       @MainActor @Observable: async increment/decrement, save, formatted strings
 ├── Views/
@@ -92,7 +100,7 @@ xcodebuild test -project CounterSwiftUI.xcodeproj -scheme CounterSwiftUI \
 
 ### Unit tests (`Tests`)
 
-Swift Testing. Covers the model (defaults, naming of new counters, deep-link parsing and building), the App Intents counter entity (sorting, lookup by id), the view model (increment/decrement, formatted strings, save), SwiftData insert/save/delete using an in-memory store, and the container's one-time example seeding.
+Swift Testing. Covers the model (defaults, naming of new counters, deep-link parsing and building, date parsing, matching by id, name and closest date), the App Intents counter entity and actions (sorting, lookup by id, increment/decrement saving, unknown counter), the view model (increment/decrement, formatted strings, save), SwiftData insert/save/delete using an in-memory store, and the container's one-time example seeding.
 
 ### UI tests (`UITests`)
 
@@ -103,7 +111,7 @@ XCTest with `XCUIApplication` — Swift Testing is not available in UI-test targ
 - swipe-to-delete
 - increment/decrement on the detail screen, including below zero
 - the count surviving navigation back to the list
-- opening a counter by deep link, and ignoring an unknown id
+- opening a counter by deep link, by id and by name, and ignoring an unknown one
 
 The deep-link tests open the URL with `XCUIDevice.shared.system.open(_:)`, which delivers it to the running app. `XCUIApplication.open(_:)` would relaunch the app, and the relaunched in-memory store would have new ids.
 

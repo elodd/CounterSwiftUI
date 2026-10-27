@@ -37,7 +37,52 @@ struct CounterModelTests {
     @Test func deepLinkId() throws {
         let model = CounterModel(name: "Linked")
         let url = try #require(URL(string: "counterswiftui://counter/\(model.id)"))
-        #expect(CounterModel.id(fromDeepLink: url) == model.id)
+        #expect(CounterModel.reference(fromDeepLink: url) == model.id)
+    }
+
+    @Test func deepLinkName() throws {
+        let url = try #require(URL(string: "counterswiftui://counter/Counter%202"))
+        #expect(CounterModel.reference(fromDeepLink: url) == "Counter 2")
+    }
+
+    @Test(arguments: [
+        ("counterswiftui://counter/Laps?date=2026-10-26", "2026-10-26 00:00"),
+        ("counterswiftui://counter/Laps?date=2026-10-26T14:30", "2026-10-26 14:30"),
+    ])
+    func deepLinkDate(url: String, expected: String) throws {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        let link = try #require(URL(string: url))
+        let date = try #require(CounterModel.date(fromDeepLink: link))
+
+        #expect(formatter.string(from: date) == expected)
+    }
+
+    @Test(arguments: ["counterswiftui://counter/Laps", "counterswiftui://counter/Laps?date=yesterday"])
+    func deepLinkWithoutValidDate(url: String) throws {
+        #expect(CounterModel.date(fromDeepLink: try #require(URL(string: url))) == nil)
+    }
+
+    @Test func matchPrefersId() {
+        let first = CounterModel(name: "Laps")
+        let second = CounterModel(name: "Other")
+        #expect(CounterModel.match(second.id, near: nil, in: [first, second]) === second)
+    }
+
+    @Test func matchByNameWithoutDateTakesFirst() {
+        let older = CounterModel(name: "Laps", date: Date(timeIntervalSince1970: 0))
+        let newer = CounterModel(name: "Laps", date: Date(timeIntervalSince1970: 1_000_000))
+        #expect(CounterModel.match("Laps", near: nil, in: [older, newer]) === older)
+    }
+
+    @Test func matchByNameAndDateTakesClosest() {
+        let older = CounterModel(name: "Laps", date: Date(timeIntervalSince1970: 0))
+        let newer = CounterModel(name: "Laps", date: Date(timeIntervalSince1970: 1_000_000))
+        let other = CounterModel(name: "Other", date: Date(timeIntervalSince1970: 900_000))
+
+        #expect(CounterModel.match("Laps", near: Date(timeIntervalSince1970: 800_000), in: [older, newer, other]) === newer)
+        #expect(CounterModel.match("Missing", near: Date(), in: [older, newer, other]) == nil)
     }
 
     @Test(arguments: [
@@ -47,7 +92,7 @@ struct CounterModelTests {
         "counterswiftui://counter/a/b",
     ])
     func deepLinkInvalid(url: String) throws {
-        #expect(CounterModel.id(fromDeepLink: try #require(URL(string: url))) == nil)
+        #expect(CounterModel.reference(fromDeepLink: try #require(URL(string: url))) == nil)
     }
 
     @Test func deepLinkURLRoundTrips() {
@@ -55,7 +100,7 @@ struct CounterModelTests {
         let url = CounterModel.deepLinkURL(id: model.id)
 
         #expect(url.absoluteString == "counterswiftui://counter/\(model.id)")
-        #expect(CounterModel.id(fromDeepLink: url) == model.id)
+        #expect(CounterModel.reference(fromDeepLink: url) == model.id)
     }
 
     @Test func idsAreUnique() {
@@ -291,6 +336,33 @@ struct CounterEntityTests {
         let ids = [laps.id]
 
         #expect(try CounterEntity.all(in: context, where: #Predicate { ids.contains($0.id) }).map(\.name) == ["Laps"])
+    }
+
+    @Test func incrementSavesAndReturnsCount() async throws {
+        let laps = try CounterActions.counter(id: try lapsID(), in: context)
+        laps.date = Date(timeIntervalSince1970: 0)
+        try context.save()
+
+        let counterModel = try await CounterActions.increment(id: laps.id, in: context)
+
+        #expect(counterModel.count == 1)
+        #expect(counterModel.date > Date(timeIntervalSince1970: 0))
+        #expect(!context.hasChanges)
+    }
+
+    @Test func decrementBelowZero() async throws {
+        let counterModel = try await CounterActions.decrement(id: try lapsID(), in: context)
+        #expect(counterModel.count == -1)
+    }
+
+    @Test func unknownIdThrows() async {
+        await #expect(throws: CounterIntentError.notFound) {
+            try await CounterActions.increment(id: "missing", in: context)
+        }
+    }
+
+    private func lapsID() throws -> String {
+        try #require(try CounterEntity.all(in: context).first { $0.name == "Laps" }).id
     }
 
     @Test func entityMirrorsModel() {
