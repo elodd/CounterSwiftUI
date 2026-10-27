@@ -4,6 +4,26 @@
     "%@" : {
 
     },
+    "%@ is at %lld." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ is at %2$lld."
+          }
+        }
+      }
+    },
+    "%@ is now %lld." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ is now %2$lld."
+          }
+        }
+      }
+    },
     "%lld" : {
 
     },
@@ -17,6 +37,9 @@
           }
         }
       }
+    },
+    "Adds one to a counter without opening the app." : {
+
     },
     "Counter" : {
 
@@ -54,6 +77,9 @@
         }
       }
     },
+    "Decrement Counter" : {
+
+    },
     "decrementButtonTitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -61,6 +87,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Decrement"
+          }
+        }
+      }
+    },
+    "doneButtonTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
           }
         }
       }
@@ -75,6 +112,12 @@
           }
         }
       }
+    },
+    "Get Count" : {
+
+    },
+    "Increment Counter" : {
+
     },
     "incrementButtonTitle" : {
       "extractionState" : "manual",
@@ -113,6 +156,37 @@
 
     },
     "Opens a counter in the app." : {
+
+    },
+    "qrCodeButtonTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show QR code"
+          }
+        }
+      }
+    },
+    "shareButtonTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
+          }
+        }
+      }
+    },
+    "Subtracts one from a counter without opening the app." : {
+
+    },
+    "Tells the current count of a counter." : {
+
+    },
+    "That counter no longer exists." : {
 
     }
   },

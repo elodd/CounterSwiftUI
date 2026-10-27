@@ -129,6 +129,20 @@ final class CounterUITests: XCTestCase {
         assertCount(2, in: app)
     }
 
+    func testQRCodeOpensForCounter() {
+        let app = launch()
+        let firstRow = rows(in: app).firstMatch
+        XCTAssertTrue(firstRow.appears())
+        let id = String(firstRow.identifier.dropFirst(counterRowPrefix.count))
+        firstRow.tap()
+
+        app.buttons["qrCodeButton"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["counterQR.\(id)"].appears())
+
+        app.buttons["qrDoneButton"].tap()
+        assertCount(0, in: app)
+    }
+
     func testDecrementBelowZero() {
         let app = launch()
         rows(in: app).firstMatch.tap()

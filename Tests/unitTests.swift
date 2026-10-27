@@ -5,9 +5,11 @@
 //  Created by eloddobos on 2025-08-07.
 //
 
+import CoreImage
 import Foundation
 import SwiftData
 import Testing
+import UIKit
 @testable import CounterSwiftUI
 
 // MARK: - CounterModel
@@ -144,6 +146,22 @@ struct CounterModelTests {
     @Test func nextNameIgnoresCustomNames() {
         let counterTitle = String(localized: "counterTitle")
         #expect(CounterModel.nextName(existing: ["Groceries", "Laps"]) == "\(counterTitle) 0")
+    }
+}
+
+// MARK: - QRCode
+
+@Suite("QRCode")
+struct QRCodeTests {
+
+    @Test func encodesDeepLink() throws {
+        let url = CounterModel.deepLinkURL(id: CounterModel(name: "Scanned").id)
+        let image = try #require(QRCode.image(for: url.absoluteString))
+        let ciImage = try #require(CIImage(image: image))
+        let detector = try #require(CIDetector(ofType: CIDetectorTypeQRCode, context: nil))
+        let features = detector.features(in: ciImage.transformed(by: CGAffineTransform(scaleX: 10, y: 10)))
+
+        #expect((features.first as? CIQRCodeFeature)?.messageString == url.absoluteString)
     }
 }
 

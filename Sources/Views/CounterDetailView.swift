@@ -11,6 +11,7 @@ import SwiftData
 struct CounterDetailView: View {
     @Bindable var viewModel: CounterViewModel
     @Environment(\.modelContext) var modelContext
+    @State private var isShowingQRCode = false
 
     private var count: Int { self.viewModel.counterModel.count }
 
@@ -20,6 +21,7 @@ struct CounterDetailView: View {
             self.countDisplay
             self.controls
             Spacer()
+            self.qrCode
             self.lastUpdated
         }
         .padding(24)
@@ -30,6 +32,10 @@ struct CounterDetailView: View {
         .sensoryFeedback(.selection, trigger: self.count)
         .onChange(of: self.count) { _, _ in
             self.saveState()
+        }
+        .sheet(isPresented: $isShowingQRCode) {
+            CounterQRView(counterModel: self.viewModel.counterModel)
+                .presentationDetents([.medium, .large])
         }
     }
 
@@ -73,6 +79,24 @@ struct CounterDetailView: View {
                 await self.viewModel.increment()
             }
         }
+    }
+
+    /// The counter's deep link; tap to enlarge and share.
+    private var qrCode: some View {
+        Button {
+            self.isShowingQRCode = true
+        } label: {
+            QRCodeImage(counterModel: self.viewModel.counterModel)
+                .frame(width: 120, height: 120)
+                .padding(12)
+                .background(
+                    Color(.secondarySystemGroupedBackground),
+                    in: RoundedRectangle(cornerRadius: 20, style: .continuous)
+                )
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text(.qrCodeButtonTitle))
+        .accessibilityIdentifier("qrCodeButton")
     }
 
     private var lastUpdated: some View {
