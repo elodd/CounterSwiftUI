@@ -29,17 +29,16 @@ A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftDat
 - **First launch:** three example counters are created — `Counter 0` (0), `Counter 1` (1), `Counter 2` (2). This happens only once (tracked with the `prefilledExamples` key in `UserDefaults`), so deleted examples do not come back.
 - **Add:** tapping **+** creates `Counter <N>` (N = the lowest number not already used, so a deleted name is reused) with count 0 and opens its detail screen.
 - **Open:** tapping a row opens the counter's detail screen.
-- **Deep link:** `counterswiftui://counter/<id or name>` opens that counter directly; Back returns to the list. The id is tried first, then the name. If names repeat, add an approximate `?date=` (`yyyy-MM-dd` or `yyyy-MM-ddTHH:mm`, local time) to pick the counter whose *Last updated* is closest to it; without a date the first in name order opens. Anything unknown is ignored. To try it on a simulator:
+- **Deep link:** `counterswiftui://counter/<id or name>` opens that counter directly; Back returns to the list. To try it on a simulator:
   ```sh
   xcrun simctl list devices booted                      # find the simulator's UDID
   xcrun simctl openurl <UDID> "counterswiftui://counter/Counter%202"                  # by name
-  xcrun simctl openurl <UDID> "counterswiftui://counter/Counter%202?date=2026-10-26"  # by name, closest to that day
   xcrun simctl openurl <UDID> "counterswiftui://counter/<id>"                         # by id
   ```
   - Run the current build on that simulator first; builds from before the URL scheme was added fail with `LSApplicationWorkspaceErrorDomain` error 115.
   - Use the UDID instead of `booted` when more than one simulator is running, since `booted` picks just one of them.
   - Ids are per store, so an id must come from the same simulator (e.g. via the row's `counterRow.<id>` accessibility identifier).
-- **Siri, Shortcuts and Spotlight (App Intents):** counters are picked by name; the chosen counter is then tracked by id, so saved shortcuts survive renames.
+- **Siri, Shortcuts and Spotlight (App Intents):** counters are picked by name; the chosen counter is then tracked by id.
   | Say | Does |
   |---|---|
   | "Open Counter 2 in CounterSwiftUI" | Opens it through the deep link |
@@ -100,7 +99,7 @@ xcodebuild test -project CounterSwiftUI.xcodeproj -scheme CounterSwiftUI \
 
 ### Unit tests (`Tests`)
 
-Swift Testing. Covers the model (defaults, naming of new counters, deep-link parsing and building, date parsing, matching by id, name and closest date), the App Intents counter entity and actions (sorting, lookup by id, increment/decrement saving, unknown counter), the view model (increment/decrement, formatted strings, save), SwiftData insert/save/delete using an in-memory store, and the container's one-time example seeding.
+Swift Testing. Covers the model (defaults, naming of new counters, deep-link parsing and building, matching by id, then name), the App Intents counter entity and actions (sorting, lookup by id, increment/decrement saving, unknown counter), the view model (increment/decrement, formatted strings, save), SwiftData insert/save/delete using an in-memory store, and the container's one-time example seeding.
 
 ### UI tests (`UITests`)
 
