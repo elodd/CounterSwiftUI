@@ -47,44 +47,19 @@ struct CounterModelTests {
         #expect(CounterModel.reference(fromDeepLink: url) == "Counter 2")
     }
 
-    @Test(arguments: [
-        ("counterswiftui://counter/Laps?date=2026-10-26", "2026-10-26 00:00"),
-        ("counterswiftui://counter/Laps?date=2026-10-26T14:30", "2026-10-26 14:30"),
-    ])
-    func deepLinkDate(url: String, expected: String) throws {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let link = try #require(URL(string: url))
-        let date = try #require(CounterModel.date(fromDeepLink: link))
-
-        #expect(formatter.string(from: date) == expected)
-    }
-
-    @Test(arguments: ["counterswiftui://counter/Laps", "counterswiftui://counter/Laps?date=yesterday"])
-    func deepLinkWithoutValidDate(url: String) throws {
-        #expect(CounterModel.date(fromDeepLink: try #require(URL(string: url))) == nil)
-    }
-
     @Test func matchPrefersId() {
         let first = CounterModel(name: "Laps")
         let second = CounterModel(name: "Other")
-        #expect(CounterModel.match(second.id, near: nil, in: [first, second]) === second)
+        #expect(CounterModel.match(second.id, in: [first, second]) === second)
     }
 
-    @Test func matchByNameWithoutDateTakesFirst() {
-        let older = CounterModel(name: "Laps", date: Date(timeIntervalSince1970: 0))
-        let newer = CounterModel(name: "Laps", date: Date(timeIntervalSince1970: 1_000_000))
-        #expect(CounterModel.match("Laps", near: nil, in: [older, newer]) === older)
-    }
+    @Test func matchByNameTakesFirst() {
+        let first = CounterModel(name: "Laps")
+        let second = CounterModel(name: "Laps")
+        let other = CounterModel(name: "Other")
 
-    @Test func matchByNameAndDateTakesClosest() {
-        let older = CounterModel(name: "Laps", date: Date(timeIntervalSince1970: 0))
-        let newer = CounterModel(name: "Laps", date: Date(timeIntervalSince1970: 1_000_000))
-        let other = CounterModel(name: "Other", date: Date(timeIntervalSince1970: 900_000))
-
-        #expect(CounterModel.match("Laps", near: Date(timeIntervalSince1970: 800_000), in: [older, newer, other]) === newer)
-        #expect(CounterModel.match("Missing", near: Date(), in: [older, newer, other]) == nil)
+        #expect(CounterModel.match("Laps", in: [first, second, other]) === first)
+        #expect(CounterModel.match("Missing", in: [first, second, other]) == nil)
     }
 
     @Test(arguments: [

@@ -59,35 +59,9 @@ extension CounterModel {
         return url.pathComponents[1]
     }
 
-    /// Returns the optional `?date=` of a deep link, as `yyyy-MM-dd` or `yyyy-MM-ddTHH:mm` in local time.
-    static func date(fromDeepLink url: URL) -> Date? {
-        guard let value = URLComponents(url: url, resolvingAgainstBaseURL: false)?
-            .queryItems?.first(where: { $0.name == "date" })?.value else {
-            return nil
-        }
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = .current
-        for format in ["yyyy-MM-dd'T'HH:mm", "yyyy-MM-dd"] {
-            formatter.dateFormat = format
-            if let date = formatter.date(from: value) {
-                return date
-            }
-        }
-        return nil
-    }
-
-    /// The counter a deep link refers to: an id match, otherwise the counter with that name,
-    /// choosing the one last updated closest to `date` when names repeat.
-    static func match(_ reference: String, near date: Date?, in counters: [CounterModel]) -> CounterModel? {
-        if let counterModel = counters.first(where: { $0.id == reference }) {
-            return counterModel
-        }
-        let named = counters.filter { $0.name == reference }
-        guard let date else {
-            return named.first
-        }
-        return named.min { abs($0.date.timeIntervalSince(date)) < abs($1.date.timeIntervalSince(date)) }
+    /// The counter a deep link refers to: an id match, otherwise the first counter with that name.
+    static func match(_ reference: String, in counters: [CounterModel]) -> CounterModel? {
+        counters.first { $0.id == reference } ?? counters.first { $0.name == reference }
     }
 
     static var defaults: [CounterModel] {

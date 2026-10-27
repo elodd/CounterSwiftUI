@@ -88,11 +88,7 @@ public struct ContentView: View {
     /// Opens the counter whose id or name is in a deep link; unknown ones are ignored.
     func openCounter(_ url: URL) {
         guard let reference = CounterModel.reference(fromDeepLink: url),
-              let counterModel = CounterModel.match(
-                reference,
-                near: CounterModel.date(fromDeepLink: url),
-                in: self.counterModels
-              ) else {
+              let counterModel = CounterModel.match(reference, in: self.counterModels) else {
             return
         }
         self.path = NavigationPath([counterModel])
