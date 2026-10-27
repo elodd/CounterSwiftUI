@@ -50,6 +50,14 @@ struct CounterModelTests {
         #expect(CounterModel.id(fromDeepLink: try #require(URL(string: url))) == nil)
     }
 
+    @Test func deepLinkURLRoundTrips() {
+        let model = CounterModel(name: "Linked")
+        let url = CounterModel.deepLinkURL(id: model.id)
+
+        #expect(url.absoluteString == "counterswiftui://counter/\(model.id)")
+        #expect(CounterModel.id(fromDeepLink: url) == model.id)
+    }
+
     @Test func idsAreUnique() {
         let ids = Set((0..<100).map { _ in CounterModel(name: "x").id })
         #expect(ids.count == 100)
@@ -255,6 +263,43 @@ struct CounterPersistenceTests {
         try context.save()
 
         #expect(try fetchAll().map(\.name) == ["After"])
+    }
+}
+
+// MARK: - App Intents
+
+@Suite("CounterEntity")
+@MainActor
+struct CounterEntityTests {
+
+    private let container: ModelContainer
+    private var context: ModelContext { container.mainContext }
+
+    init() throws {
+        let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
+        container = try ModelContainer(for: CounterModel.self, configurations: configuration)
+        ["Laps", "Groceries", "Counter 0"].forEach { context.insert(CounterModel(name: $0)) }
+        try context.save()
+    }
+
+    @Test func allIsSortedByName() throws {
+        #expect(try CounterEntity.all(in: context).map(\.name) == ["Counter 0", "Groceries", "Laps"])
+    }
+
+    @Test func allByIds() throws {
+        let laps = try #require(try CounterEntity.all(in: context).first { $0.name == "Laps" })
+        let ids = [laps.id]
+
+        #expect(try CounterEntity.all(in: context, where: #Predicate { ids.contains($0.id) }).map(\.name) == ["Laps"])
+    }
+
+    @Test func entityMirrorsModel() {
+        let model = CounterModel(name: "Mirrored", count: 7)
+        let entity = CounterEntity(model)
+
+        #expect(entity.id == model.id)
+        #expect(entity.name == "Mirrored")
+        #expect(entity.count == 7)
     }
 }
 

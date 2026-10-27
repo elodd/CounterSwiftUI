@@ -39,6 +39,16 @@ extension CounterModel {
     static let deepLinkScheme = "counterswiftui"
     static let deepLinkHost = "counter"
 
+    /// The `counterswiftui://counter/<id>` URL that opens this counter.
+    static func deepLinkURL(id: String) -> URL {
+        var components = URLComponents()
+        components.scheme = deepLinkScheme
+        components.host = deepLinkHost
+        components.path = "/\(id)"
+        // Scheme, host and an absolute path always form a valid URL.
+        return components.url!
+    }
+
     /// Returns the counter id from a `counterswiftui://counter/<id>` URL.
     static func id(fromDeepLink url: URL) -> String? {
         guard url.scheme == deepLinkScheme,

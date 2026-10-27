@@ -37,6 +37,7 @@ A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftDat
   - Run the current build on that simulator first; builds from before the URL scheme was added fail with `LSApplicationWorkspaceErrorDomain` error 115.
   - Use the UDID instead of `booted` when more than one simulator is running, since `booted` picks just one of them.
   - Ids are per store, so the id must come from the same simulator (e.g. via the row's `counterRow.<id>` accessibility identifier).
+- **Siri, Shortcuts and Spotlight (App Intents):** the *Open Counter* action opens a chosen counter through the same deep link. Say or type "Open Counter 2 in CounterSwiftUI", or use it in the Shortcuts app; counters can be picked by name.
 - **Increment / Decrement:** changes the count by ±1, with a light haptic tap. Counts can go below zero.
 - **Save:** every count change updates *Last updated* to the current time and saves to SwiftData. Counters persist between launches.
 - **Delete:** swipe left on a row to delete the counter.
@@ -45,8 +46,9 @@ A small iPhone/iPad app for keeping named counters, built with SwiftUI, SwiftDat
 
 ```
 Sources/
-├── CounterSwiftUIApp.swift                 App entry, creates the model container once
+├── CounterSwiftUIApp.swift                 App entry, creates the model container once, shares it with App Intents
 ├── Models/CounterModel.swift               @Model: id, name, count, date; example defaults, next name, delete, deep-link parsing
+├── Intents/CounterIntents.swift            App Intents: counter entity and query, Open Counter intent, App Shortcuts phrases
 ├── ModelContainers/CounterContainer.swift  Creates the SwiftData container, seeds examples once, UI-test launch mode
 ├── ViewModels/CounterViewModel.swift       @MainActor @Observable: async increment/decrement, save, formatted strings
 ├── Views/
@@ -90,7 +92,7 @@ xcodebuild test -project CounterSwiftUI.xcodeproj -scheme CounterSwiftUI \
 
 ### Unit tests (`Tests`)
 
-Swift Testing. Covers the model (defaults, naming of new counters, deep-link parsing), the view model (increment/decrement, formatted strings, save), SwiftData insert/save/delete using an in-memory store, and the container's one-time example seeding.
+Swift Testing. Covers the model (defaults, naming of new counters, deep-link parsing and building), the App Intents counter entity (sorting, lookup by id), the view model (increment/decrement, formatted strings, save), SwiftData insert/save/delete using an in-memory store, and the container's one-time example seeding.
 
 ### UI tests (`UITests`)
 
