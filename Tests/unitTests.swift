@@ -8,6 +8,8 @@
 import CoreImage
 import Foundation
 import SwiftData
+import SwiftMocks
+import SwiftMocksTesting
 import Testing
 import UIKit
 @testable import CounterSwiftUI
@@ -146,6 +148,10 @@ struct QRCodeTests {
 @MainActor
 struct CounterViewModelTests {
 
+    init() {
+        SwiftMocks.useSwiftTesting()
+    }
+
     private func makeViewModel(name: String = "Test Counter", count: Int = 0) -> CounterViewModel {
         CounterViewModel(counterModel: CounterModel(name: name, count: count))
     }
@@ -184,6 +190,27 @@ struct CounterViewModelTests {
         CounterViewModel(counterModel: model).updateDate()
 
         #expect(model.date >= before)
+    }
+
+    @Test func saveUpdatesDateThenSaves() throws {
+        let model = CounterModel(name: "Saved", date: Date(timeIntervalSince1970: 0))
+        let context = ContextSaverDoubleMock()
+        let before = Date()
+
+        try CounterViewModel(counterModel: model).save(in: context)
+
+        #expect(context.verify.save.calledOnce)
+        #expect(model.date >= before)
+    }
+
+    @Test func saveErrorPropagates() {
+        let context = ContextSaverDoubleMock()
+        context.stub.save(throws: CounterIntentError.notFound)
+
+        #expect(throws: CounterIntentError.notFound) {
+            try self.makeViewModel().save(in: context)
+        }
+        #expect(context.verify.save.calledOnce)
     }
 
     @Test func nameString() {
@@ -374,11 +401,10 @@ struct CounterEntityTests {
 @MainActor
 struct CounterContainerTests {
 
-    private let suiteName = "CounterContainerTests.\(UUID().uuidString)"
-    private let userDefaults: UserDefaults
+    private let userDefaults = KeyValueStoreDoubleMock()
 
-    init() throws {
-        userDefaults = try #require(UserDefaults(suiteName: suiteName))
+    init() {
+        SwiftMocks.useSwiftTesting()
     }
 
     private func counterCount(in container: ModelContainer) throws -> Int {
@@ -386,21 +412,23 @@ struct CounterContainerTests {
     }
 
     @Test func firstLaunchInsertsExamples() throws {
-        defer { userDefaults.removePersistentDomain(forName: suiteName) }
+        self.userDefaults.stub.bool(returns: false)
 
-        let container = CounterContainer.createContainer(inMemory: true, userDefaults: userDefaults)
+        let container = CounterContainer.createContainer(inMemory: true, userDefaults: self.userDefaults)
 
         #expect(try counterCount(in: container) == 3)
-        #expect(userDefaults.bool(forKey: CounterContainer.prefilledExamplesKey))
+        #expect(self.userDefaults.verify.bool.calledWith(CounterContainer.prefilledExamplesKey))
+        #expect(self.userDefaults.verify.set.calledOnce)
+        #expect(self.userDefaults.verify.set.calledWith(.where { $0.0 && $0.1 == CounterContainer.prefilledExamplesKey }))
     }
 
     @Test func laterLaunchSkipsExamples() throws {
-        defer { userDefaults.removePersistentDomain(forName: suiteName) }
-        userDefaults.set(true, forKey: CounterContainer.prefilledExamplesKey)
+        self.userDefaults.stub.bool(returns: true)
 
-        let container = CounterContainer.createContainer(inMemory: true, userDefaults: userDefaults)
+        let container = CounterContainer.createContainer(inMemory: true, userDefaults: self.userDefaults)
 
         #expect(try counterCount(in: container) == 0)
+        #expect(self.userDefaults.verify.set.neverCalled)
     }
 
     @Test func uiTestingArgumentInsertsExamples() throws {

@@ -8,6 +8,14 @@
 import Foundation
 import SwiftData
 
+/// Where the prefilled-examples flag lives: `UserDefaults` in the app, a mock in tests.
+protocol KeyValueStore {
+    func bool(forKey key: String) -> Bool
+    func set(_ value: Bool, forKey key: String)
+}
+
+extension UserDefaults: KeyValueStore {}
+
 actor CounterContainer {
     static let prefilledExamplesKey = "prefilledExamples"
     static let uiTestingArgument = "-uiTesting"
@@ -30,7 +38,7 @@ actor CounterContainer {
     @MainActor
     static public func createContainer(
         inMemory: Bool = false,
-        userDefaults: UserDefaults = .standard
+        userDefaults: any KeyValueStore = UserDefaults.standard
     ) -> ModelContainer {
         let schema = Schema([CounterModel.self])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: inMemory)

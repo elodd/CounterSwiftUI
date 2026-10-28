@@ -8,6 +8,13 @@
 import SwiftData
 import SwiftUI
 
+/// What `CounterViewModel.save(in:)` needs from a context: `ModelContext` in the app, a mock in tests.
+protocol ContextSaver {
+    func save() throws
+}
+
+extension ModelContext: ContextSaver {}
+
 @MainActor
 @Observable
 final class CounterViewModel {
@@ -46,7 +53,7 @@ final class CounterViewModel {
         self.counterModel.date = Date()
     }
 
-    func save(in context: ModelContext) throws {
+    func save(in context: some ContextSaver) throws {
         self.updateDate()
         try context.save()
     }
