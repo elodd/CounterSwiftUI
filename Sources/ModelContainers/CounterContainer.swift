@@ -16,7 +16,7 @@ protocol KeyValueStore {
 
 extension UserDefaults: KeyValueStore {}
 
-actor CounterContainer {
+enum CounterContainer {
     static let prefilledExamplesKey = "prefilledExamples"
     static let uiTestingArgument = "-uiTesting"
     static let uiTestingEmptyArgument = "-uiTestingEmpty"
@@ -36,13 +36,19 @@ actor CounterContainer {
     }
 
     @MainActor
-    static public func createContainer(
+    static func createContainer(
         inMemory: Bool = false,
         userDefaults: any KeyValueStore = UserDefaults.standard
     ) -> ModelContainer {
         let schema = Schema([CounterModel.self])
         let configuration = ModelConfiguration(isStoredInMemoryOnly: inMemory)
-        let container = try! ModelContainer(for: schema, configurations: configuration)
+        let container: ModelContainer
+        do {
+            container = try ModelContainer(for: schema, configurations: configuration)
+        } catch {
+            // Nothing works without the store; crash with the reason instead of a bare `try!`.
+            fatalError("Could not create the counter store: \(error)")
+        }
         if userDefaults.bool(forKey: prefilledExamplesKey) == false {
             CounterModel.defaults.forEach { container.mainContext.insert($0) }
             userDefaults.set(true, forKey: prefilledExamplesKey)
