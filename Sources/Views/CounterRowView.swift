@@ -11,9 +11,8 @@ struct CounterRowView: View {
     @Bindable var counterViewModel: CounterViewModel
 
     var body: some View {
-        NavigationLink(destination: {
-            CounterDetailView(viewModel: self.counterViewModel)
-        }, label: {
+        // Value-based, so the push is recorded in ContentView's navigation path.
+        NavigationLink(value: self.counterViewModel.counterModel, label: {
             VStack(alignment: .leading, spacing: 2) {
                 Text(counterViewModel.nameString())
                 Text(counterViewModel.countString())
@@ -27,9 +26,13 @@ struct CounterRowView: View {
 
 #Preview {
     let counterTitle = String(localized: "counterTitle")
-    CounterRowView(
-        counterViewModel: CounterViewModel(counterModel: CounterModel(
-            name: "\(counterTitle) 0")
-        )
-    )
+    NavigationStack {
+        List {
+            CounterRowView(
+                counterViewModel: CounterViewModel(counterModel: CounterModel(
+                    name: "\(counterTitle) 0")
+                )
+            )
+        }
+    }
 }
