@@ -19,7 +19,6 @@ class CounterModel: Identifiable {
         self.name = name
         self.count = count
         self.date = date
-        print (id)
     }
 }
 
