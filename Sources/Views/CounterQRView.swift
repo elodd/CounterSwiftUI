@@ -35,14 +35,24 @@ struct QRCodeImage: View {
     var padding: CGFloat = 8
     var cornerRadius: CGFloat = 12
 
+    /// Generated once per counter id, not on every redraw.
+    @State private var image: UIImage?
+
     var body: some View {
-        if let image = QRCode.image(for: self.counterModel) {
-            Image(uiImage: image)
-                .interpolation(.none)
-                .resizable()
-                .scaledToFit()
-                .padding(self.padding)
-                .background(Color.white, in: RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous))
+        Group {
+            if let image = self.image {
+                Image(uiImage: image)
+                    .interpolation(.none)
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                Color.clear.aspectRatio(1, contentMode: .fit)
+            }
+        }
+        .padding(self.padding)
+        .background(Color.white, in: RoundedRectangle(cornerRadius: self.cornerRadius, style: .continuous))
+        .task(id: self.counterModel.id) {
+            self.image = QRCode.image(for: self.counterModel)
         }
     }
 }
