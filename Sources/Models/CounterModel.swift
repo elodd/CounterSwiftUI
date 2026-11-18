@@ -22,12 +22,6 @@ class CounterModel: Identifiable {
     }
 }
 
-extension CounterModel: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.id)
-    }
-}
-
 extension CounterModel: CustomStringConvertible {
     var description: String {
         return "[[CounterModel] id: \(self.id), name: \(self.name), count: \(self.count), date: \(self.date)]"
